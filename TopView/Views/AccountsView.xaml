@@ -16,7 +16,7 @@
                             SelectedItem="{Binding SelectedAccount, Mode=TwoWay}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Padding="5" Margin="0" >
+                        <Grid Padding="5" Margin="0">
                             <Label Text="{Binding Name}" VerticalOptions="Center" FontAttributes="Bold"/>
                         </Grid>
                     </DataTemplate>

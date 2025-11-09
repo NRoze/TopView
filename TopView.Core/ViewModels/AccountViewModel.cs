@@ -12,6 +12,7 @@ namespace TopView.Core.ViewModel
     {
         private readonly IStockService _stockService;
         private readonly ITradeRepository _repo;
+        private readonly IAccountRepository _accountRepo;
         public ObservableCollection<TradeViewModel> Trades { get; } = new ObservableCollection<TradeViewModel>();
         public AddTradeViewModel AddTradeViewModel { get; } = new AddTradeViewModel();
 
@@ -41,22 +42,29 @@ namespace TopView.Core.ViewModel
                 {
                     Account.Name = _name = value;
                     OnPropertyChanged();
+                    Commit();
                 }
             }
         }
-        public AccountViewModel(ITradeRepository repo, IStockService stockService)
+        public void Commit()
         {
+            _accountRepo.SaveAsync(Account);
+        }
+        public AccountViewModel( IAccountRepository accountRepo, ITradeRepository repo, IStockService stockService)
+        {
+            _accountRepo = accountRepo;
             _repo = repo;
             _stockService = stockService;
             AddTradeViewModel.SubmitAction += AddTransaction;
         }
 
-        public Command<decimal> SubmitTransferCommand => new Command<decimal>(tryTranferCash);
-        private async void tryTranferCash(decimal i_Amount)
+        public Command<decimal> SubmitTransferCommand => new Command<decimal>(
+                                            async (amount) => await tryTranferCash(amount));
+        private async Task tryTranferCash(decimal i_Amount)
         {
             Cash += i_Amount;
         }
-        private async void AddTransaction(string i_Symbol, decimal i_Quantity, decimal i_Price, bool i_IsBuy)
+        private async Task AddTransaction(string i_Symbol, decimal i_Quantity, decimal i_Price, bool i_IsBuy)
         {
             Trade trade = Account.Trades.FirstOrDefault(t => t.Symbol == i_Symbol && !t.IsOver);
 
@@ -73,7 +81,7 @@ namespace TopView.Core.ViewModel
             }
         }
 
-        private async void editExistingTrade(Trade i_Trade, decimal i_Quantity, decimal i_Price, bool i_IsBuy)
+        private async Task editExistingTrade(Trade i_Trade, decimal i_Quantity, decimal i_Price, bool i_IsBuy)
         {
             if (i_Trade != null)
             {
@@ -109,34 +117,37 @@ namespace TopView.Core.ViewModel
             }
         }
 
-        private async void tradeCompleted(TradeViewModel i_ViewModel)
+        private async Task tradeCompleted(TradeViewModel i_ViewModel)
         {
             i_ViewModel.Trade.IsOver = true;
-            saveTrade(i_ViewModel.Trade);
+            i_ViewModel.Commit();
             Trades.Remove(i_ViewModel);
         }
 
-        private async void addNewTrade(string i_Symbol, decimal i_Quantity, decimal i_Price)
+        private async Task addNewTrade(string i_Symbol, decimal i_Quantity, decimal i_Price)
         {
             var trade = new Trade
             {
+                AccountId = Account.Id,
                 Symbol = i_Symbol,
                 Quantity = i_Quantity,
                 Date = DateTime.Now,
                 Cost = i_Price
             };
-            var viewModel = new TradeViewModel(trade);
+            await _repo.AddAsync(trade);
+
+            var viewModel = new TradeViewModel(_repo, trade);
 
             Cash -= i_Quantity * i_Price;
             Trades.Add(viewModel);
             Account.Trades.Add(trade);
-            addTrade(trade);
             updateTrade(viewModel);
         }
 
         private void updateValues()
         {
             Name = Account.Name;
+            Commit();
         }
 
         private void updateTrades()
@@ -146,7 +157,7 @@ namespace TopView.Core.ViewModel
             {
                 foreach (var trade in Account.Trades)
                 {
-                    var viewModel = new TradeViewModel(trade);
+                    var viewModel = new TradeViewModel(_repo, trade);
 
                     Trades.Add(viewModel);
                 }
@@ -180,23 +191,14 @@ namespace TopView.Core.ViewModel
                 tradeVM.Price = quote.c;
                 tradeVM.Change = quote.d; 
                 tradeVM.ChangeP = quote.dp;
-                saveTrade(tradeVM.Trade);
                 UpdateAssets();
             }
-        }
-
-        private void addTrade(Trade trade)
-        {
-            _repo.AddAsync(trade);
-        }
-        private void saveTrade(Trade trade)
-        {
-            _repo.SaveAsync(trade);
         }
 
         private void UpdateAssets()
         {
             Assets = Trades.Select(t => t.Value).Sum();
+            Commit();
         }
 
         public decimal Cash
@@ -209,6 +211,7 @@ namespace TopView.Core.ViewModel
                     Account.Cash = value;
                     OnPropertyChanged();
                     UpdateBalance();
+                    Commit();
                 }
             }
         }
@@ -229,6 +232,7 @@ namespace TopView.Core.ViewModel
                     OnPropertyChanged();
                     UpdateBalance();
                     OnPropertyChanged(nameof(Unrealized));
+                    Commit();
                 }
             }
         }
@@ -241,6 +245,7 @@ namespace TopView.Core.ViewModel
                 {
                     Account.Balance = value;
                     OnPropertyChanged();
+                    Commit();
                 }
             }
         }
@@ -262,6 +267,7 @@ namespace TopView.Core.ViewModel
                 {
                     Account.Realized = value;
                     OnPropertyChanged();
+                    Commit();
                 }
             }
         }

@@ -6,7 +6,7 @@ namespace TopView.Core.ViewModels
     public class AddTradeViewModel : BaseNotify
     {
         public Command SubmitCommand { get; }
-        public Action<string, decimal, decimal, bool> SubmitAction;
+        public Func<string, decimal, decimal, bool, Task> SubmitAction;
         public AddTradeViewModel()
         {
             SubmitCommand = new Command(OnSubmit, CanSubmit);

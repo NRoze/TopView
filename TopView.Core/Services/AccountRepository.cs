@@ -16,7 +16,8 @@ public class AccountRepository : IAccountRepository
     public async Task<IEnumerable<Account>> GetAccountsAsync() => await _db.GetAccountsAsync();
     public async Task<IEnumerable<Trade>> GetTradesAsync() => await _db.GetTradesAsync();
 
-    public async Task AddAsync(Account account) => await _db.SaveAccountAsync(account);
+    public async Task AddAsync(Account account) => await _db.AddAccountAsync(account);
+    public async Task SaveAsync(Account account) => await _db.SaveAccountAsync(account);
 
     public async Task RemoveAsync(Account account) => await _db.DeleteAccountAsync(account);
 }

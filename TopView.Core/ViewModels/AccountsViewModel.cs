@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Security.Principal;
 using System.Windows.Input;
 using TopView.Core.Data;
@@ -34,7 +35,8 @@ namespace TopView.Core.ViewModels
         }
 
         public ICommand AddAccountCommand => new Command(_ => createAccount("New Account"));
-        public ICommand RemoveAccountCommand => new Command<AccountViewModel>(removeAccount);
+        public ICommand RemoveAccountCommand => new Command<AccountViewModel>(
+                                    async (vm) => await removeAccount(vm));
 
 
         public AccountsViewModel(IAccountRepository repo, Func<Account, AccountViewModel> accountVmFactory)
@@ -43,16 +45,17 @@ namespace TopView.Core.ViewModels
             _accountVmFactory = accountVmFactory;
 
             //RESET accounts!!
-            _repo.Reset();
+            //_repo.Reset();
 
             LoadAccounts();
         }
 
-        private async void createAccount(string name, bool isOverview = false)
+        private async Task createAccount(string name, bool isOverview = false)
         {
             Account newAccount = new Account { Name = name, IsOverview = isOverview };
             IAccountViewModel vm;
 
+            await _repo.AddAsync(newAccount);
             if (isOverview)
             {
                 vm = ServiceHelper.GetService<OverviewViewModel>();
@@ -62,14 +65,12 @@ namespace TopView.Core.ViewModels
             else
             {
                 vm = _accountVmFactory(newAccount);
-
-                await _repo.AddAsync(newAccount);
             }
 
             Accounts.Add(vm);
             SelectedAccount = vm;
         }
-        private async void removeAccount(AccountViewModel accountVM)
+        private async Task removeAccount(AccountViewModel accountVM)
         {
             if (accountVM != null && !accountVM.Account.IsOverview)
             {
@@ -81,11 +82,15 @@ namespace TopView.Core.ViewModels
             }
         }
 
-        private async void LoadAccounts()
+        private async Task LoadAccounts()
         {
             var accounts = await _repo.GetAccountsAsync();
             var trades = await _repo.GetTradesAsync();
 
+            foreach (var acc in accounts)
+            {
+                Debug.WriteLine($"{acc.Name}, {acc.Id}");
+            }
             if (accounts.Count() == 0)
             {
                 createAccount("Overview", true);
@@ -93,8 +98,22 @@ namespace TopView.Core.ViewModels
 
             foreach (var account in accounts)
             {
-                account.Trades = new ObservableCollection<Trade>(trades.Where(t => t.AccountId == account.Id && t.Quantity != 0).ToList());
-                Accounts.Add(_accountVmFactory(account));
+                IAccountViewModel vm;
+
+
+                if (account.IsOverview)
+                {
+                    vm = ServiceHelper.GetService<OverviewViewModel>();
+                    vm.Account = account;
+                    vm.Name = account.Name;
+                }
+                else
+                {
+                    account.Trades = new ObservableCollection<Trade>(trades.Where(t => t.AccountId == account.Id && !t.IsOver));
+                    vm = _accountVmFactory(account);
+                }
+                    
+                Accounts.Add(vm);
             }
 
             SelectedAccount = Accounts.FirstOrDefault();

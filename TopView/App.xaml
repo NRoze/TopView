@@ -7,6 +7,7 @@
         <ResourceDictionary>
             <Style TargetType="Border" >
                 <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+                <Setter Property="Stroke" Value="Gray" />
             </Style>
             <local:NullToBoolConverter x:Key="NullToBoolConverter"/>
             <local:BoolToBuySellConverter x:Key="BoolToBuySellConverter" />

@@ -44,9 +44,10 @@ namespace TopView
             {
                 return (Account account) =>
                 {
+                    var accountRepo = sp.GetRequiredService<IAccountRepository>();
                     var repo = sp.GetRequiredService<ITradeRepository>();
                     var stockService = sp.GetRequiredService<IStockService>();
-                    return new AccountViewModel(repo, stockService) { Account = account };
+                    return new AccountViewModel(accountRepo, repo, stockService) { Account = account };
                 };
             });
 

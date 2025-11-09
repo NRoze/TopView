@@ -7,6 +7,8 @@ namespace TopView
         public MainPage()
         {
             InitializeComponent();
+
+            
         }
     }
 }

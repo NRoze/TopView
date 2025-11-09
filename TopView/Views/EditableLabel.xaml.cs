@@ -42,6 +42,15 @@ public partial class EditableLabel : ContentView
         hoverGesture.PointerExited += (s, e) => ShowEditIcon(false);
         DisplayPanel.GestureRecognizers.Add(hoverGesture);
 #endif
+
+        EditEntry.Focused += (s, e) =>
+        {
+            Dispatcher.Dispatch(() =>
+            {
+                EditEntry.CursorPosition = 0;
+                EditEntry.SelectionLength = EditEntry.Text?.Length ?? 0;
+            });
+        };
     }
 
     private void ShowEditIcon(bool show)
@@ -54,10 +63,7 @@ public partial class EditableLabel : ContentView
         _isEditing = true;
         DisplayPanel.IsVisible = false;
         EditEntry.IsVisible = true;
-
         EditEntry.Focus();
-        EditEntry.SelectionLength = EditEntry.Text?.Length ?? 0;
-        EditEntry.CursorPosition = 0;
     }
 
     private void OnEntryCompleted(object sender, EventArgs e)

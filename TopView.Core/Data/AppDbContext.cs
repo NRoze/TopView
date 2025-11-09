@@ -21,9 +21,10 @@ public class AppDbContext
     }
     public Task<List<Account>> GetAccountsAsync() => _db.Table<Account>().ToListAsync();
     public Task<List<Trade>> GetTradesAsync() => _db.Table<Trade>().ToListAsync();
-    public Task<int> SaveAsync<T>(T item) => _db.InsertAsync(item);
+    public Task<int> SaveAsync<T>(T item) => _db.InsertOrReplaceAsync(item);
     public Task<int> DeleteAsync<T>(T item) => _db.DeleteAsync(item);
-    public Task<int> SaveAccountAsync(Account account) => _db.InsertAsync(account);
+    public Task<int> AddAccountAsync(Account account) => _db.InsertAsync(account);
+    public Task<int> SaveAccountAsync(Account account) => _db.InsertOrReplaceAsync(account);
     public Task<int> DeleteAccountAsync(Account account) => _db.DeleteAsync(account);
     public Task<int> AddTradeAsync(Trade trade) => _db.InsertAsync(trade);
     public Task<int> SaveTradeAsync(Trade trade) => _db.InsertOrReplaceAsync(trade);

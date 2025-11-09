@@ -1,14 +1,17 @@
 ﻿using TopView.Core.Infrastructure;
 using TopView.Core.Models;
+using TopView.Core.Services;
 
 namespace TopView.Core.ViewModels;
 
 public partial class TradeViewModel : BaseNotify
 {
+    private readonly ITradeRepository _repo;
     public Trade Trade { get; }
 
-    public TradeViewModel(Trade trade)
+    public TradeViewModel(ITradeRepository repo, Trade trade)
     {
+        _repo = repo;
         Trade = trade;
 
         UpdateFromModel();
@@ -39,8 +42,14 @@ public partial class TradeViewModel : BaseNotify
             {
                 Trade.Cost = _cost = value;
                 OnPropertyChanged();
+                Commit();
             }
         }
+    }
+
+    public void Commit()
+    {
+        _repo.SaveAsync(Trade);
     }
 
     private decimal _realized;
@@ -53,6 +62,7 @@ public partial class TradeViewModel : BaseNotify
             {
                 Trade.Realized = _realized = value;
                 OnPropertyChanged();
+                Commit();
             }
         }
     }
@@ -68,6 +78,7 @@ public partial class TradeViewModel : BaseNotify
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Value));
                 OnPropertyChanged(nameof(Unrealized));
+                Commit();
             }
         }
     }
@@ -83,6 +94,7 @@ public partial class TradeViewModel : BaseNotify
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Value));
                 OnPropertyChanged(nameof(Unrealized));
+                Commit();
             }
         }
     }
@@ -99,6 +111,7 @@ public partial class TradeViewModel : BaseNotify
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ChangeP));
                 OnPropertyChanged(nameof(Unrealized));
+                Commit();
             }
         }
     }
@@ -114,6 +127,7 @@ public partial class TradeViewModel : BaseNotify
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Change));
                 OnPropertyChanged(nameof(Unrealized));
+                Commit();
             }
         }
     }
