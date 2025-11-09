@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TopView.Views.EditableLabel"
+             x:Name="Root">
+
+
+    <Grid ColumnDefinitions="*,Auto">
+        <!-- Display Mode -->
+        <HorizontalStackLayout x:Name="DisplayPanel" Spacing="4" VerticalOptions="Center"
+                               Margin="11,10,0,14">
+            <Label x:Name="DisplayLabel" 
+                   Text="{Binding Text, Source={x:Reference Root}}"
+                   VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnEditTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Label Text="✏️" x:Name="EditIcon" FontSize="12" Opacity="0" VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnEditTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+
+        </HorizontalStackLayout>
+
+        <!-- Edit Mode -->
+        <Entry x:Name="EditEntry" HorizontalOptions="Start" Margin="0,0,14,0" 
+               
+                Grid.ColumnSpan="2"
+                Text="{Binding Text, Source={x:Reference Root}, Mode=TwoWay}"
+                IsVisible="False"
+                Completed="OnEntryCompleted"
+                Unfocused="OnEntryUnfocused"/>
+    </Grid>
+</ContentView>

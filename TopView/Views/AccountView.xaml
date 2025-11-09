@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView x:Name="DetailContent"
+    x:Class="TopView.Views.AccountView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:TopView.Views"
+    HorizontalOptions="Fill"
+    VerticalOptions="Fill">
+    <Grid>
+        <VerticalStackLayout x:Name="m_AccountView" Padding="10" Spacing="0">
+            <views:EditableLabel Text="{Binding Name, Mode=TwoWay}" HorizontalOptions="Start" FontSize="18"/>
+            <Grid ColumnDefinitions="1*,1*,Auto">
+                <Grid ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto, Auto" ColumnSpacing="20">
+                    <Label Text="Balance"/>
+                    <Label Text="Cash" Grid.Row="1"/>
+                    <Label Text="Assets" Grid.Row="2"/>
+                    <Label Text="{Binding Balance, StringFormat='${0:N2}'}" Grid.Column="1"/>
+                    <Label Text="{Binding Cash, StringFormat='${0:N2}'}" Grid.Row="1" Grid.Column="1"/>
+                    <Label Text="{Binding Assets, StringFormat='${0:N2}'}" Grid.Row="2" Grid.Column="1"/>
+                </Grid>
+                <Grid ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto, Auto" ColumnSpacing="20" Grid.Column="1">
+                    <Label Text="Realized"/>
+                    <Label Text="Unrealized" Grid.Row="1"/>
+                    <!--<Label Text="Assets" Grid.Row="2"/>-->
+                    <Label Text="{Binding Realized, StringFormat='${0:N2}'}" Grid.Column="1"
+                           TextColor="{Binding Realized, Converter={StaticResource ProfitToColorConverter}}"/>
+                    <Label Text="{Binding Unrealized, StringFormat='${0:N2}'}" Grid.Row="1" Grid.Column="1"
+                           TextColor="{Binding Unrealized, Converter={StaticResource ProfitToColorConverter}}"/>
+                    <!--<Label Text="{Binding Assets, StringFormat='${0:N2}'}" Grid.Row="2" Grid.Column="1"/>-->
+                </Grid>
+                <Border Grid.Column="2" StrokeThickness="1" Padding="10">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Transfer Cash" VerticalOptions="Center"/>
+                        <Entry Placeholder="Amount" Keyboard="Numeric" x:Name="TransferAmount"
+                               MinimumWidthRequest="60"/>
+                        <Button Text="Submit" Command="{Binding SubmitTransferCommand}"
+                                Clicked="OnSubmitClicked"
+                                CommandParameter="{Binding Text, Source={x:Reference TransferAmount}, Converter={StaticResource StringToDecimalConverter}}"/>
+                    </HorizontalStackLayout>
+                </Border>
+            </Grid>
+            <Border Padding="10" Margin="0,10">
+                <views:AddTradeView BindingContext="{Binding AddTradeViewModel}"/>
+            </Border>
+            <CollectionView ItemsSource="{Binding Trades}" HeightRequest="200">
+                <CollectionView.Header>
+                    <HorizontalStackLayout Spacing="2">
+                        <Label Text="" FontAttributes="Bold" WidthRequest="50"/>
+                        <Label Text="Cost" FontAttributes="Bold" WidthRequest="70"/>
+                        <Label Text="Qty" FontAttributes="Bold" WidthRequest="50"/>
+                        <Label Text="Value" FontAttributes="Bold" WidthRequest="70"/>
+                        <Label Text="Realized" FontAttributes="Bold" WidthRequest="80"/>
+                        <Label Text="Unrealized" FontAttributes="Bold" WidthRequest="140"/>
+                        <Label Text="Price" FontAttributes="Bold"  WidthRequest="60" />
+                        <Label Text="Change" FontAttributes="Bold"/>
+                    </HorizontalStackLayout> 
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <HorizontalStackLayout Spacing="2">
+                            <Label Text="{Binding Symbol}" WidthRequest="50" FontSize="12"/>
+                            <Label Text="{Binding Cost, StringFormat='${0:N2}'}" WidthRequest="70" FontSize="12"/>
+                            <Label Text="{Binding Quantity}" WidthRequest="50" FontSize="12"/>
+                            <Label Text="{Binding Value, StringFormat='${0:N2}'}" WidthRequest="70" FontSize="12"/>
+                            <Label Text="{Binding Realized, StringFormat='${0:N2}'}" WidthRequest="80" FontSize="12"
+                                   TextColor="{Binding Realized, Converter={StaticResource ProfitToColorConverter}}"/>
+                            <Label Text="{Binding Unrealized, StringFormat='${0:N2}'}" WidthRequest="140" FontSize="12"
+                                   TextColor="{Binding Unrealized, Converter={StaticResource ProfitToColorConverter}}"/>
+                            <!--<Label Text="{Binding UnrealizedP}" WidthRequest="140" FontSize="12"
+                                   TextColor="{Binding UnrealizedP, Converter={StaticResource ProfitToColorConverter}}"/>-->
+                            <Label Text="{Binding Price, StringFormat='${0:N2}'}" WidthRequest="60" FontSize="12"/>
+                            <Label Text="{Binding Change}" 
+                                   TextColor="{Binding Change, Converter={StaticResource ProfitToColorConverter}}"/>
+                            <Label Text="{Binding ChangeP, StringFormat='({0})'}"
+                                   TextColor="{Binding ChangeP, Converter={StaticResource ProfitToColorConverter}}"/>
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </Grid>
+</ContentView>

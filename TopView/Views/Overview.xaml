@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TopView.Views.Overview">
+
+
+    <ScrollView >
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Section: Summary Totals -->
+            <Label Text="Portfolio Overview"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+
+                <Border Stroke="{AppThemeBinding Light='#ddd', Dark='#444'}" Padding="10" Grid.Column="0">
+                    <VerticalStackLayout>
+                        <Label Text="Total Balance" FontSize="14" Opacity="0.7"/>
+                        <Label Text="{Binding Balance, StringFormat='${0:N2}'}" FontSize="18" FontAttributes="Bold"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Stroke="{AppThemeBinding Light='#ddd', Dark='#444'}"  Padding="10" Grid.Column="1">
+                    <VerticalStackLayout>
+                        <Label Text="Cash" FontSize="14" Opacity="0.7"/>
+                        <Label Text="{Binding Cash, StringFormat='${0:N2}'}" FontSize="18" FontAttributes="Bold"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Stroke="{AppThemeBinding Light='#ddd', Dark='#444'}"  Padding="10" Grid.Column="2">
+                    <VerticalStackLayout>
+                        <Label Text="Assets" FontSize="14" Opacity="0.7"/>
+                        <Label Text="{Binding Assets, StringFormat='${0:N2}'}" FontSize="18" FontAttributes="Bold"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Stroke="{AppThemeBinding Light='#ddd', Dark='#444'}" Padding="10" Grid.Row="1" Grid.Column="0">
+                    <VerticalStackLayout>
+                        <Label Text="Realized" FontSize="14" Opacity="0.7"/>
+                        <Label Text="{Binding Realized, StringFormat='${0:N2}'}" FontSize="18" FontAttributes="Bold" 
+                           TextColor="{Binding Realized, Converter={StaticResource ProfitToColorConverter}}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Stroke="{AppThemeBinding Light='#ddd', Dark='#444'}"  Padding="10" Grid.Row="1" Grid.Column="1">
+                    <VerticalStackLayout>
+                        <Label Text="Unrealized" FontSize="14" Opacity="0.7"/>
+                        <Label Text="{Binding Unrealized, StringFormat='${0:N2}'}" FontSize="18" FontAttributes="Bold" 
+                           TextColor="{Binding Unrealized, Converter={StaticResource ProfitToColorConverter}}"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Stroke="{AppThemeBinding Light='#ddd', Dark='#444'}"  Padding="10" Grid.Row="1" Grid.Column="2">
+                    <VerticalStackLayout>
+                        <Label Text="Success Rate" FontSize="14" Opacity="0.7"/>
+                        <Label Text="{Binding SuccessRate, StringFormat='{0:N1}%'}" FontSize="18" FontAttributes="Bold"/>
+                    </VerticalStackLayout>
+                </Border>
+
+            </Grid>
+
+            <!-- Section: Trade Statistics -->
+            <Border Stroke="{AppThemeBinding Light='#ddd', Dark='#444'}"  Padding="10">
+                <VerticalStackLayout>
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                        <Label Text="Total Trades:" Grid.Row="0" Grid.Column="0"/>
+                        <Label Text="{Binding TotalTrades}" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End"/>
+                        <Label Text="Average Return:" Grid.Row="1" Grid.Column="0"/>
+                        <Label Text="{Binding AverageReturn, StringFormat='{0:N2}%'}" Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="End"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Section: Chart -->
+            <!--<Border Stroke="{AppThemeBinding Light='#ddd', Dark='#444'}"  Padding="10">
+                <VerticalStackLayout>
+                    <Label Text="Performance Chart" FontSize="18" FontAttributes="Bold" Margin="0,0,0,10"/>
+                    --><!-- Placeholder chart area --><!--
+                    <BoxView HeightRequest="150"
+                             CornerRadius="8"
+                             Color="{AppThemeBinding Light='#e0e0e0', Dark='#303030'}"
+                             HorizontalOptions="Fill" />
+                </VerticalStackLayout>
+            </Border>-->
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

@@ -1,0 +1,37 @@
+<!-- File: TopView/Views/AccountsView.xaml -->
+<ContentView
+    x:Class="TopView.Views.AccountsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:views="clr-namespace:TopView.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Grid Padding="10" ColumnSpacing="10" ColumnDefinitions="2*,Auto,3*">
+        <VerticalStackLayout Grid.Column="0" Spacing="5" Margin="0,20,0,0">
+            <Button Text="Add Account"
+                    Command="{Binding AddAccountCommand}"
+                    HorizontalOptions="Start"/>
+
+            <CollectionView ItemsSource="{Binding Accounts}"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedAccount, Mode=TwoWay}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="5" Margin="0" >
+                            <Label Text="{Binding Name}" VerticalOptions="Center" FontAttributes="Bold"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+        <Border Grid.Column="1" StrokeThickness="1"/>
+        <views:AccountView Grid.Column="2" BindingContext="{Binding SelectedAccount}"
+                     x:Name="m_AccountView"
+                     HorizontalOptions="Fill" 
+                     VerticalOptions="Fill"></views:AccountView>
+        <views:Overview Grid.Column="2" BindingContext="{Binding SelectedAccount}"
+                        x:Name="m_Overview"
+                     HorizontalOptions="Fill" 
+                     VerticalOptions="Fill"></views:Overview>
+       
+    </Grid>
+</ContentView>
