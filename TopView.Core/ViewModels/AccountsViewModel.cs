@@ -14,7 +14,7 @@ namespace TopView.Core.ViewModels
 {
     public class AccountsViewModel : BaseNotify
     {
-        private readonly IAccountRepository _repo;
+        private readonly IAccountRepository _accountRepo;
         private readonly Func<Account, AccountViewModel> _accountVmFactory;
 
         public ObservableCollection<IAccountViewModel> Accounts { get; } = new ObservableCollection<IAccountViewModel>();
@@ -41,7 +41,7 @@ namespace TopView.Core.ViewModels
 
         public AccountsViewModel(IAccountRepository repo, Func<Account, AccountViewModel> accountVmFactory)
         {
-            _repo = repo;
+            _accountRepo = repo;
             _accountVmFactory = accountVmFactory;
 
             //RESET accounts!!
@@ -55,7 +55,7 @@ namespace TopView.Core.ViewModels
             Account newAccount = new Account { Name = name, IsOverview = isOverview };
             IAccountViewModel vm;
 
-            await _repo.AddAsync(newAccount);
+            await _accountRepo.AddAsync(newAccount);
             if (isOverview)
             {
                 vm = ServiceHelper.GetService<OverviewViewModel>();
@@ -74,7 +74,7 @@ namespace TopView.Core.ViewModels
         {
             if (accountVM != null && !accountVM.Account.IsOverview)
             {
-                await _repo.RemoveAsync(accountVM.Account);
+                await _accountRepo.RemoveAsync(accountVM.Account);
                 Accounts.Remove(accountVM);
 
                 if (SelectedAccount == accountVM)
@@ -84,8 +84,8 @@ namespace TopView.Core.ViewModels
 
         private async Task LoadAccounts()
         {
-            var accounts = await _repo.GetAccountsAsync();
-            var trades = await _repo.GetTradesAsync();
+            var accounts = await _accountRepo.GetAccountsAsync();
+            var trades = await _accountRepo.GetTradesAsync();
 
             foreach (var acc in accounts)
             {

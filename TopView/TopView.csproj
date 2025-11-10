@@ -85,6 +85,9 @@
 	  <MauiXaml Update="Views\AddTradeView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\ChartView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\EditableLabel.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

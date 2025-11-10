@@ -31,4 +31,11 @@ public partial class AccountsView : ContentView
             }
         }
     }
+
+    private async void OnSettingsTapped(object sender, TappedEventArgs e)
+    {
+        if (sender is Label label)
+        {
+        }
+    }
 }

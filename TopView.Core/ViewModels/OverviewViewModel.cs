@@ -13,16 +13,27 @@ namespace TopView.Core.ViewModels
 {
     public class OverviewViewModel : BaseNotify, IAccountViewModel
     {
+        private readonly IDataRepository _dataRepo;
         private readonly AccountsViewModel _accountsViewModel;
-        private readonly IAccountRepository _repo;
-        public OverviewViewModel(IAccountRepository repo, AccountsViewModel vm)
+        private readonly IAccountRepository _accountRepo;
+        public List<BalancePoint> BalancePoints { get; private set; }
+        public OverviewViewModel(IDataRepository dataRepo, IAccountRepository repo, AccountsViewModel vm)
         {
-            _repo = repo;
+            _dataRepo = dataRepo;
+            _accountRepo = repo;
             _accountsViewModel = vm;
         }
 
         private decimal _totalBalance;
-        public decimal Balance { get => _totalBalance; set => SetProperty(ref _totalBalance, value); }
+        public decimal Balance
+        {
+            get => _totalBalance;
+            set
+            {
+                SetProperty(ref _totalBalance, value);
+                udateBalancePoint();
+            }
+        }
 
         private decimal _totalCash;
         public decimal Cash { get => _totalCash; set => SetProperty(ref _totalCash, value); }
@@ -59,7 +70,7 @@ namespace TopView.Core.ViewModels
             Realized = accounts.Sum(a => a.Realized);
             Unrealized = accounts.Sum(a => a.Unrealized);
 
-            var allTrades = await _repo.GetTradesAsync();
+            var allTrades = await _accountRepo.GetTradesAsync();
 
             if (allTrades.Count() > 0)
             {
@@ -70,6 +81,48 @@ namespace TopView.Core.ViewModels
                 TotalTrades = total;
                 AverageReturn = total > 0 ? (double)allTrades.Average(t => t.Realized) : 0;
             }
+        }
+
+        private async Task udateBalancePoint()
+        {
+            await createIfNeeded();
+            updateCurrentBalancePoint();
+            OnPropertyChanged(nameof(BalancePoints));
+        }
+
+        private void updateCurrentBalancePoint()
+        {
+            var today = DateTime.Today;
+            var point = BalancePoints.FirstOrDefault(
+                bp => bp.Time.Month == today.Month &&
+                        bp.Time.Year == today.Year);
+
+            if (point != null)
+            {
+                point.Balance = (double)Balance;
+                _dataRepo.SaveBalancePointAsync(point);
+            }
+            else
+            {
+                BalancePoint newPoint = new BalancePoint { Time = today, Balance = (double)Balance };
+                
+                BalancePoints.Add(newPoint);
+                _dataRepo.AddBalancePointAsync(newPoint);
+            }
+        }
+
+        private async Task createIfNeeded()
+        {
+            var monthlyData = await _dataRepo.GetBalancePointsAsync();
+
+            if (monthlyData != null && monthlyData.Count() > 0)
+            {
+                BalancePoints = [.. monthlyData!];
+            }
+            else
+            {
+                BalancePoints = new List<BalancePoint>();
+            };
         }
     }
 }

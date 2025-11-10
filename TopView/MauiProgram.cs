@@ -28,6 +28,7 @@ namespace TopView
 
             // Dependency injection
             builder.Services.AddSingleton(new AppDbContext(dbPath));
+            builder.Services.AddSingleton<IDataRepository, DataRepository>();
             builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
             builder.Services.AddSingleton<ITradeRepository, TradeRepository>();
             builder.Services.AddSingleton<IStockService>(sp =>

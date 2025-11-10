@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:TopView.Controls"
+             x:Class="TopView.Views.ChartView">
+
+    <StackLayout Padding="0" VerticalOptions="Start" HorizontalOptions="Start" MinimumWidthRequest="310">
+        <controls:SimpleBarChart x:Name="MyChart" Margin="0,-10,0,10"
+                                 HorizontalOptions="Start"/>
+        <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
+            <Button Text="Real Data" Clicked="LoadRealData_Clicked" />
+            <Button Text="Demo Data" Clicked="LoadData_Clicked" />
+        </HorizontalStackLayout>
+    </StackLayout>
+</ContentView>
