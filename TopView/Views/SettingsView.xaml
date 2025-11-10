@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TopView.Views.SettingsView"
+              MinimumWidthRequest="300"
+             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
+
+    <Grid RowDefinitions="auto,*">
+        <Label
+                x:Name="CloseLabel"
+                Text="✖" 
+                FontSize="20"
+                TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                VerticalOptions="Start"
+                HorizontalOptions="End"
+                Padding="5"
+                Margin="0"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center">
+
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding CloseSettingsCommand}" />
+            </Label.GestureRecognizers>
+        </Label>
+        <VerticalStackLayout Padding="0" Spacing="20" Grid.Row="1" 
+                             VerticalOptions="Center" HorizontalOptions="Center">
+            <Button Text="Reset Database"
+                    TextColor="White"
+                    BackgroundColor="Red"
+                    Command="{Binding ResetDatabaseCommand}" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentView>

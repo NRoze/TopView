@@ -36,6 +36,7 @@ public partial class AccountsView : ContentView
     {
         if (sender is Label label)
         {
+            vm.SettingsDisplayed = true;
         }
     }
 }

@@ -15,6 +15,7 @@
             <local:OverviewSelectedConverter x:Key="OverviewSelectedConverter"/>
             <local:StringToDecimalConverter x:Key="StringToDecimalConverter"/>
             <local:ProfitToColorConverter x:Key="ProfitToColorConverter"/>
+            <local:InverseBoolConverter x:Key="InverseBoolConverter"/>
             
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />

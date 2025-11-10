@@ -38,14 +38,24 @@ namespace TopView.Core.ViewModels
         public ICommand RemoveAccountCommand => new Command<AccountViewModel>(
                                     async (vm) => await removeAccount(vm));
 
+        private bool settingsDisplayed = false;
+        public bool SettingsDisplayed 
+        {
+            get => settingsDisplayed;
+            set
+            { 
+                if (settingsDisplayed != value)
+                {
+                    settingsDisplayed = value;
+                    OnPropertyChanged();
+                }   
+            }
+        }
 
         public AccountsViewModel(IAccountRepository repo, Func<Account, AccountViewModel> accountVmFactory)
         {
             _accountRepo = repo;
             _accountVmFactory = accountVmFactory;
-
-            //RESET accounts!!
-            //_repo.Reset();
 
             LoadAccounts();
         }
@@ -82,18 +92,21 @@ namespace TopView.Core.ViewModels
             }
         }
 
-        private async Task LoadAccounts()
+        public async Task LoadAccounts()
+        {
+            clearData();
+            await populateAccounts();
+            SelectedAccount = Accounts.FirstOrDefault();
+        }
+
+        private async Task populateAccounts()
         {
             var accounts = await _accountRepo.GetAccountsAsync();
             var trades = await _accountRepo.GetTradesAsync();
 
-            foreach (var acc in accounts)
-            {
-                Debug.WriteLine($"{acc.Name}, {acc.Id}");
-            }
             if (accounts.Count() == 0)
             {
-                createAccount("Overview", true);
+                await createAccount("Overview", true);
             }
 
             foreach (var account in accounts)
@@ -112,12 +125,15 @@ namespace TopView.Core.ViewModels
                     account.Trades = new ObservableCollection<Trade>(trades.Where(t => t.AccountId == account.Id && !t.IsOver));
                     vm = _accountVmFactory(account);
                 }
-                    
+
                 Accounts.Add(vm);
             }
-
-            SelectedAccount = Accounts.FirstOrDefault();
         }
 
+        private void clearData()
+        {
+            Accounts.Clear();
+            SelectedAccount = null;
+        }
     }
 }
