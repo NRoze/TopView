@@ -86,11 +86,11 @@ namespace TopView.Core.ViewModels
         private async Task udateBalancePoint()
         {
             await createIfNeeded();
-            updateCurrentBalancePoint();
+            await updateCurrentBalancePoint();
             OnPropertyChanged(nameof(BalancePoints));
         }
 
-        private void updateCurrentBalancePoint()
+        private async Task updateCurrentBalancePoint()
         {
             var today = DateTime.Today;
             var point = BalancePoints.FirstOrDefault(
@@ -99,16 +99,26 @@ namespace TopView.Core.ViewModels
 
             if (point != null)
             {
-                point.Balance = (double)Balance;
-                _dataRepo.SaveBalancePointAsync(point);
+                await updateBalancePoint(point);
             }
             else
             {
-                BalancePoint newPoint = new BalancePoint { Time = today, Balance = (double)Balance };
-                
-                BalancePoints.Add(newPoint);
-                _dataRepo.AddBalancePointAsync(newPoint);
+                await addBalancePoint(today);
             }
+        }
+
+        private async Task addBalancePoint(DateTime today)
+        {
+            BalancePoint newPoint = new BalancePoint { Time = today, Balance = (double)Balance };
+
+            await _dataRepo.AddBalancePointAsync(newPoint);
+            BalancePoints.Add(newPoint);
+        }
+
+        private async Task updateBalancePoint(BalancePoint point)
+        {
+            point.Balance = (double)Balance;
+            await _dataRepo.SaveBalancePointAsync(point);
         }
 
         private async Task createIfNeeded()

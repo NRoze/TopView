@@ -39,7 +39,6 @@ namespace TopView
             });
 
             builder.Services.AddSingleton<AccountsViewModel>();
-            //builder.Services.AddTransient<IAccountViewModel, AccountViewModel>();
             builder.Services.AddTransient<OverviewViewModel, OverviewViewModel>();
 
             builder.Services.AddTransient<Func<Account, AccountViewModel>>(sp =>
