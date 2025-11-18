@@ -66,11 +66,19 @@
             <!-- Section: Trade Statistics -->
             <Border Stroke="{AppThemeBinding Light='#ddd', Dark='#444'}"  Padding="10">
                 <VerticalStackLayout>
-                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">
                         <Label Text="Total Trades:" Grid.Row="0" Grid.Column="0"/>
-                        <Label Text="{Binding TotalTrades}" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End"/>
+                        <Label Text="{Binding TotalTrades}" 
+                               Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="End"/>
                         <Label Text="Average Return:" Grid.Row="1" Grid.Column="0"/>
-                        <Label Text="{Binding AverageReturn, StringFormat='{0:N2}%'}" Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="End"/>
+                        <Label Text="{Binding AverageReturn, StringFormat='{0:N2}%'}" 
+                               Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="End"/>
+                        <Label Text="Monthly Return:" Grid.Row="2" Grid.Column="0"/>
+                        <Label Text="{Binding MonthlyReturnP, StringFormat='{0:P2}'}" 
+                               Grid.Row="2" Grid.Column="1" HorizontalTextAlignment="End"/>
+                        <Label Text="Daily Return:" Grid.Row="3" Grid.Column="0"/>
+                        <Label Text="{Binding DaylyReturnP, StringFormat='{0:P2}'}" 
+                               Grid.Row="3" Grid.Column="1" HorizontalTextAlignment="End"/>
                     </Grid>
                 </VerticalStackLayout>
             </Border>

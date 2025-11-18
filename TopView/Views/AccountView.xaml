@@ -52,7 +52,7 @@
                         <Label Text="Realized" FontAttributes="Bold" WidthRequest="80"/>
                         <Label Text="Unrealized" FontAttributes="Bold" WidthRequest="140"/>
                         <Label Text="Price" FontAttributes="Bold"  WidthRequest="60" />
-                        <Label Text="Change" FontAttributes="Bold"/>
+                        <Label Text="Daily" FontAttributes="Bold"/>
                     </HorizontalStackLayout> 
                 </CollectionView.Header>
                 <CollectionView.ItemTemplate>
@@ -69,9 +69,9 @@
                             <!--<Label Text="{Binding UnrealizedP}" WidthRequest="140" FontSize="12"
                                    TextColor="{Binding UnrealizedP, Converter={StaticResource ProfitToColorConverter}}"/>-->
                             <Label Text="{Binding Price, StringFormat='${0:N2}'}" WidthRequest="60" FontSize="12"/>
-                            <Label Text="{Binding Change}" 
+                            <Label Text="{Binding Change, StringFormat='${0:N2}'}" 
                                    TextColor="{Binding Change, Converter={StaticResource ProfitToColorConverter}}"/>
-                            <Label Text="{Binding ChangeP, StringFormat='({0})'}"
+                            <Label Text="{Binding ChangeP, StringFormat='({0:N2}%)'}"
                                    TextColor="{Binding ChangeP, Converter={StaticResource ProfitToColorConverter}}"/>
                         </HorizontalStackLayout>
                     </DataTemplate>

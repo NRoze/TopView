@@ -55,6 +55,26 @@ namespace TopView.Core.ViewModels
 
         private double _averageReturn;
         public double AverageReturn { get => _averageReturn; set => SetProperty(ref _averageReturn, value); }
+        public decimal DaylyReturn
+        {
+            get
+            {
+                decimal result = 0;
+
+                if (_accountsViewModel?.Accounts?.Count > 0)
+                {
+                    result = _accountsViewModel.Accounts.Where(a => a.Trades?.Count > 0)
+                        .Sum(a => a.Trades.Sum(t => t.Change));
+                }
+
+                return result;
+            }
+        }
+
+        public decimal DaylyReturnP => (Balance - DaylyReturn > 0) ? DaylyReturn / (Balance - DaylyReturn) : 0;
+        public decimal MonthlyReturn => Balance - LastMonthBalance;
+        public decimal MonthlyReturnP => LastMonthBalance > 0 ? MonthlyReturn / LastMonthBalance : 1;
+        public decimal LastMonthBalance => (decimal)(BalancePoints?.LastOrDefault()?.Balance ?? 0);
         public Account? Account { get; set; }
 
         public ObservableCollection<TradeViewModel> Trades { get; }
