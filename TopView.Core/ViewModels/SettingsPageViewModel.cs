@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TopView.Core.Infrastructure;
 using TopView.Core.Services;
+using TopView.Core.ViewModels.Interface;
 
 namespace TopView.Core.ViewModels
 {
@@ -22,10 +23,10 @@ namespace TopView.Core.ViewModels
             _accountRepo = accountRepo;
             _accoountsVM = accountsVM;
             ResetDatabaseCommand = new Command(async () => await ResetDatabase());
-            CloseSettingsCommand = new Command(async () => await CloseSettings());
+            CloseSettingsCommand = new Command(() => CloseSettings());
         }
 
-        private async Task CloseSettings()
+        private void CloseSettings()
         { 
             _accoountsVM.SettingsDisplayed = false;
         }
@@ -41,7 +42,7 @@ namespace TopView.Core.ViewModels
                 return;
 
             await _accountRepo.Reset();
-            _accoountsVM.LoadAccounts();
+            await _accoountsVM.LoadAccounts();
             await Application.Current.MainPage.DisplayAlert("Done", "Database has been reset.", "OK");
             CloseSettings();
         }

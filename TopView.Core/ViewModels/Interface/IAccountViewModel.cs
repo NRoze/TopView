@@ -2,7 +2,7 @@
 using TopView.Core.Models;
 using TopView.Core.ViewModels;
 
-namespace TopView.Core.ViewModel
+namespace TopView.Core.ViewModels.Interface
 {
     public interface IAccountViewModel
     {

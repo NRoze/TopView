@@ -5,6 +5,7 @@ using TopView.Core.Infrastructure;
 using TopView.Core.Models;
 using TopView.Core.Services;
 using TopView.Core.ViewModels;
+using TopView.Core.ViewModels.Interface;
 
 namespace TopView.Core.ViewModel
 {
@@ -16,15 +17,14 @@ namespace TopView.Core.ViewModel
         public ObservableCollection<TradeViewModel> Trades { get; } = new ObservableCollection<TradeViewModel>();
         public AddTradeViewModel AddTradeViewModel { get; } = new AddTradeViewModel();
 
-        private Account? _account;
-        public Account Account
+        public Account? Account
         {
-            get => _account;
+            get => field;
             set
             {
-                if (_account != value)
+                if (field != value)
                 {
-                    _account = value;
+                    field = value;
                     updateValues();
                     updateTrades();
                     OnPropertyChanged();
@@ -32,15 +32,14 @@ namespace TopView.Core.ViewModel
             }
         }
 
-        private string _name;
         public string Name
         {
-            get { return _name; }
+            get { return field; }
             set
             {
-                if (_name != value)
+                if (field != value)
                 {
-                    Account.Name = _name = value;
+                    Account?.Name = field = value;
                     OnPropertyChanged();
                     Commit();
                 }
@@ -48,7 +47,10 @@ namespace TopView.Core.ViewModel
         }
         public void Commit()
         {
-            _accountRepo.SaveAsync(Account);
+            if (Account != null)
+            {
+                _accountRepo.SaveAsync(Account);
+            }
         }
         public AccountViewModel( IAccountRepository accountRepo, ITradeRepository repo, IStockService stockService)
         {
@@ -58,26 +60,25 @@ namespace TopView.Core.ViewModel
             AddTradeViewModel.SubmitAction += AddTransaction;
         }
 
-        public Command<decimal> SubmitTransferCommand => new Command<decimal>(
-                                            async (amount) => await tryTranferCash(amount));
-        private async Task tryTranferCash(decimal i_Amount)
+        public Command<decimal> SubmitTransferCommand => new Command<decimal>(tryTranferCash);
+        private void tryTranferCash(decimal i_Amount)
         {
             Cash += i_Amount;
         }
         private async Task AddTransaction(string i_Symbol, decimal i_Quantity, decimal i_Price, bool i_IsBuy)
         {
-            Trade trade = Account.Trades.FirstOrDefault(t => t.Symbol == i_Symbol && !t.IsOver);
+            Trade? trade = Account.Trades.FirstOrDefault(t => t.Symbol == i_Symbol && !t.IsOver);
 
             if (trade == null)
             {
                 if (i_IsBuy)
                 {
-                    addNewTrade(i_Symbol, i_Quantity, i_Price);
+                    await addNewTrade(i_Symbol, i_Quantity, i_Price);
                 }
             }
             else
             {
-                editExistingTrade(trade, i_Quantity, i_Price, i_IsBuy);
+                await editExistingTrade(trade, i_Quantity, i_Price, i_IsBuy);
             }
         }
 
@@ -85,7 +86,7 @@ namespace TopView.Core.ViewModel
         {
             if (i_Trade != null)
             {
-                TradeViewModel viewModel = Trades.FirstOrDefault(t => t.Symbol == i_Trade.Symbol);
+                TradeViewModel? viewModel = Trades.FirstOrDefault(t => t.Symbol == i_Trade.Symbol);
 
                 if (viewModel != null)
                 {
@@ -109,7 +110,7 @@ namespace TopView.Core.ViewModel
                     }
                     else
                     {
-                        updateTrade(viewModel);
+                        await updateTrade(viewModel);
                     }
                 
                     UpdateAssets();
@@ -117,7 +118,7 @@ namespace TopView.Core.ViewModel
             }
         }
 
-        private async Task tradeCompleted(TradeViewModel i_ViewModel)
+        private void tradeCompleted(TradeViewModel i_ViewModel)
         {
             i_ViewModel.Trade.IsOver = true;
             i_ViewModel.Commit();

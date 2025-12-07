@@ -12,7 +12,7 @@ namespace TopView.Core.Converters
         public Color PositiveColor { get; set; } = Colors.Green;
         public Color NegativeColor { get; set; } = Colors.Red;
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is decimal d)
             {
@@ -25,7 +25,7 @@ namespace TopView.Core.Converters
             return PositiveColor;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return null;
         }

@@ -9,12 +9,12 @@ namespace TopView.Core.Converters
 {
     public class BoolToBuySellConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            return (bool)value ? "Buy" : "Sell";
+            return (bool?)value == true ? "Buy" : "Sell";
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return value?.ToString() == "Buy";
         }

@@ -7,31 +7,28 @@ using System.Threading.Tasks;
 using TopView.Core.Infrastructure;
 using TopView.Core.Models;
 using TopView.Core.Services;
-using TopView.Core.ViewModel;
+using TopView.Core.ViewModels.Interface;
 
 namespace TopView.Core.ViewModels
 {
-    public class OverviewViewModel : BaseNotify, IAccountViewModel
+    public class OverviewViewModel(IDataRepository dataRepo, IAccountRepository repo, AccountsViewModel vm) : BaseNotify, IAccountViewModel
     {
-        private readonly IDataRepository _dataRepo;
-        private readonly AccountsViewModel _accountsViewModel;
-        private readonly IAccountRepository _accountRepo;
-        public List<BalancePoint> BalancePoints { get; private set; }
-        public OverviewViewModel(IDataRepository dataRepo, IAccountRepository repo, AccountsViewModel vm)
-        {
-            _dataRepo = dataRepo;
-            _accountRepo = repo;
-            _accountsViewModel = vm;
-        }
+        private readonly IDataRepository _dataRepo = dataRepo;
+        private readonly AccountsViewModel _accountsViewModel = vm;
+        private readonly IAccountRepository _accountRepo = repo;
+        public List<BalancePoint>? BalancePoints { get; private set; }
 
-        private decimal _totalBalance;
         public decimal Balance
         {
-            get => _totalBalance;
+            get => field;
             set
             {
-                SetProperty(ref _totalBalance, value);
-                udateBalancePoint();
+                SetProperty(ref field, value);
+                var handler = udateBalancePoint;
+                if (handler != null)
+                {
+                    _ = handler();
+                }
             }
         }
 
@@ -113,7 +110,7 @@ namespace TopView.Core.ViewModels
         private async Task updateCurrentBalancePoint()
         {
             var today = DateTime.Today;
-            var point = BalancePoints.FirstOrDefault(
+            var point = BalancePoints?.FirstOrDefault(
                 bp => bp.Time.Month == today.Month &&
                         bp.Time.Year == today.Year);
 

@@ -12,12 +12,12 @@ namespace TopView.Core.Converters
         public Color TrueColor { get; set; } = Colors.Green;
         public Color FalseColor { get; set; } = Colors.Red;
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            return (bool)value ? TrueColor : FalseColor;
+            return (value is bool b && b) ? TrueColor : FalseColor;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return null;
         }

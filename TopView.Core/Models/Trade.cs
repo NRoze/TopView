@@ -10,11 +10,11 @@ namespace TopView.Core.Models
     public class Trade
     {
         [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-        public int AccountId { get; set; }        
+        public int Id { get; init; }
+        public int AccountId { get; init; }        
 
         [MaxLength(10)]
-        public string Symbol { get; set; } = string.Empty;
+        public string Symbol { get; init; } = string.Empty;
 
         public decimal Cost { get; set; }
         public decimal Price { get; set; }

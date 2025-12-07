@@ -9,6 +9,7 @@ using TopView.Core.Infrastructure;
 using TopView.Core.Models;
 using TopView.Core.Services;
 using TopView.Core.ViewModel;
+using TopView.Core.ViewModels.Interface;
 
 namespace TopView.Core.ViewModels
 {
@@ -34,7 +35,7 @@ namespace TopView.Core.ViewModels
             }
         }
 
-        public ICommand AddAccountCommand => new Command(_ => createAccount("New Account"));
+        public ICommand AddAccountCommand => new Command(async _ => await createAccount("New Account"));
         public ICommand RemoveAccountCommand => new Command<AccountViewModel>(
                                     async (vm) => await removeAccount(vm));
 

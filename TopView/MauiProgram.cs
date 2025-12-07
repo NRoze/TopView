@@ -5,13 +5,14 @@ using TopView.Core.Models;
 using TopView.Core.Services;
 using TopView.Core.ViewModel;
 using TopView.Core.ViewModels;
+using TopView.Core.ViewModels.Interface;
 using TopView.Views;
 
 namespace TopView
 {
     public static class MauiProgram
     {
-        public static IServiceCollection Services { get; private set; }
+        public static IServiceCollection? Services { get; private set; }
 
         public static MauiApp CreateMauiApp()
         {

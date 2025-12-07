@@ -14,7 +14,7 @@ namespace TopView.Core
             bindable.BindingContextChanged += OnBindingContextChanged;
         }
 
-        private void OnBindingContextChanged(object sender, EventArgs e)
+        private void OnBindingContextChanged(object? sender, EventArgs e)
         {
             if (sender is Entry entry)
             {

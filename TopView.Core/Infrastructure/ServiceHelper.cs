@@ -7,5 +7,6 @@
         Services = serviceProvider;
     }
 
-    public static TService GetService<TService>() => Services.GetRequiredService<TService>();
+    public static TService GetService<TService>() where TService : notnull
+        => Services.GetRequiredService<TService>();
 }

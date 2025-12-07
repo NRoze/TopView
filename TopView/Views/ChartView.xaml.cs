@@ -5,7 +5,7 @@ namespace TopView.Views;
 
 public partial class ChartView : ContentView
 {
-    private OverviewViewModel ViewModel => BindingContext as OverviewViewModel;
+    private OverviewViewModel? ViewModel => BindingContext as OverviewViewModel;
 
     private bool _isRealData = true;
     public bool IsRealData
@@ -47,7 +47,7 @@ public partial class ChartView : ContentView
     {
         if (IsRealData && ViewModel != null)
         {
-            MyChart.Data = ViewModel.BalancePoints;
+            MyChart.Data = ViewModel.BalancePoints ?? [];
         }
         else
         {
