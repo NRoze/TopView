@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TopView.Views.SettingsView"
               MinimumWidthRequest="300"
-             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
+             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+             xmlns:vm="clr-namespace:TopView.Core.ViewModels;assembly=TopView.Core"
+             x:DataType="vm:SettingsPageViewModel">
 
     <Grid RowDefinitions="auto,*">
         <Label
