@@ -52,11 +52,13 @@ namespace TopView.Core.ViewModel
                 _accountRepo.SaveAsync(Account);
             }
         }
-        public AccountViewModel( IAccountRepository accountRepo, ITradeRepository repo, IStockService stockService)
+        public AccountViewModel( IAccountRepository accountRepo, ITradeRepository repo, IStockService stockService
+            , IHeartbeatService heartbeatService)
         {
             _accountRepo = accountRepo;
             _repo = repo;
             _stockService = stockService;
+            heartbeatService.Ticked += (date) => Update();
             AddTradeViewModel.SubmitAction += AddTransaction;
         }
 
@@ -165,22 +167,20 @@ namespace TopView.Core.ViewModel
             }
         }
 
-        public void Update()
+        public async Task Update()
         {
-            foreach (var tradeVM in Trades)
+            await Parallel.ForEachAsync(Trades, new ParallelOptions { MaxDegreeOfParallelism = 5 }, 
+                async (tradeVM, token) =>
             {
-                _ = Task.Run(async () =>
+                try
                 {
-                    try
-                    {
-                        await updateTrade(tradeVM);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error updating {tradeVM.Trade.Symbol}: {ex.Message}");
-                    }
-                });
-            }
+                    await updateTrade(tradeVM);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error updating {tradeVM.Trade.Symbol}: {ex.Message}");
+                }
+            });
         }
 
         private async Task updateTrade(TradeViewModel tradeVM)

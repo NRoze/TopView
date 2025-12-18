@@ -14,6 +14,6 @@ namespace TopView.Core.ViewModels.Interface
         public decimal Unrealized { get; set; }
         public Account? Account { get; set; }
         public ObservableCollection<TradeViewModel> Trades { get; }
-        void Update();
+        Task Update();
     }
 }

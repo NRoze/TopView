@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TopView.Core.Data;
+using TopView.Core.Infrastructure;
 using TopView.Core.Models;
 using TopView.Core.Services;
 using TopView.Core.ViewModel;
@@ -29,6 +30,7 @@ namespace TopView
 
             // Dependency injection
             builder.Services.AddSingleton(new AppDbContext(dbPath));
+            builder.Services.AddSingleton<IHeartbeatService, HeartbeatService>();
             builder.Services.AddSingleton<IDataRepository, DataRepository>();
             builder.Services.AddSingleton<ISettingsPageViewModel, SettingsPageViewModel>();
             builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
@@ -39,8 +41,9 @@ namespace TopView
                 return new StockService(apiKey);
             });
 
+            builder.Services.AddSingleton<IViewModelFactory, ViewModelFactory>();
             builder.Services.AddSingleton<AccountsViewModel>();
-            builder.Services.AddTransient<OverviewViewModel, OverviewViewModel>();
+            builder.Services.AddTransient<OverviewViewModel>();
 
             builder.Services.AddTransient<Func<Account, AccountViewModel>>(sp =>
             {
@@ -49,7 +52,8 @@ namespace TopView
                     var accountRepo = sp.GetRequiredService<IAccountRepository>();
                     var repo = sp.GetRequiredService<ITradeRepository>();
                     var stockService = sp.GetRequiredService<IStockService>();
-                    return new AccountViewModel(accountRepo, repo, stockService) { Account = account };
+                    var heartcheatService = sp.GetRequiredService<IHeartbeatService>();
+                    return new AccountViewModel(accountRepo, repo, stockService, heartcheatService) { Account = account };
                 };
             });
 
@@ -60,6 +64,7 @@ namespace TopView
             var app = builder.Build();
 
             ServiceHelper.Initialize(app.Services);
+            ServiceHelper.GetService<IHeartbeatService>().Start();
 
             return app;
         }

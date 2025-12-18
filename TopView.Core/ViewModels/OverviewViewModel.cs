@@ -77,9 +77,9 @@ namespace TopView.Core.ViewModels
         public ObservableCollection<TradeViewModel> Trades { get; }
         public string Name { get; set; }
 
-        public async void Update()
+        public async Task Update()
         {
-            var accounts = _accountsViewModel.Accounts.Where(a => !a.Account.IsOverview).ToList();
+            var accounts = _accountsViewModel.Accounts.Where(a => a.Account?.IsOverview != true).ToList();
 
             Balance = accounts.Sum(a => a.Balance);
             Cash = accounts.Sum(a => a.Cash);

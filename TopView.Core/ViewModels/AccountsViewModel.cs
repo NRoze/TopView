@@ -17,7 +17,7 @@ namespace TopView.Core.ViewModels
     {
         private readonly IAccountRepository _accountRepo;
         private readonly Func<Account, AccountViewModel> _accountVmFactory;
-
+        private readonly IViewModelFactory _vmFactory;
         public ObservableCollection<IAccountViewModel> Accounts { get; } = new ObservableCollection<IAccountViewModel>();
 
         private IAccountViewModel? _selectedAccount;
@@ -53,8 +53,9 @@ namespace TopView.Core.ViewModels
             }
         }
 
-        public AccountsViewModel(IAccountRepository repo, Func<Account, AccountViewModel> accountVmFactory)
+        public AccountsViewModel(IViewModelFactory vmFactory, IAccountRepository repo, Func<Account, AccountViewModel> accountVmFactory)
         {
+            _vmFactory = vmFactory;
             _accountRepo = repo;
             _accountVmFactory = accountVmFactory;
 
@@ -69,7 +70,7 @@ namespace TopView.Core.ViewModels
             await _accountRepo.AddAsync(newAccount);
             if (isOverview)
             {
-                vm = ServiceHelper.GetService<OverviewViewModel>();
+                vm = _vmFactory.Create<OverviewViewModel>();
                 vm.Account = newAccount;
                 vm.Name = name;
             }
@@ -117,7 +118,7 @@ namespace TopView.Core.ViewModels
 
                 if (account.IsOverview)
                 {
-                    vm = ServiceHelper.GetService<OverviewViewModel>();
+                    vm = _vmFactory.Create<OverviewViewModel>();
                     vm.Account = account;
                     vm.Name = account.Name;
                 }
