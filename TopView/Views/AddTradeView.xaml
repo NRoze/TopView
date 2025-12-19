@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:TopView.Core;assembly=TopView.Core"
+             xmlns:local="clr-namespace:TopView.ViewModels;assembly=TopView.ViewModels"
              x:Class="TopView.Views.AddTradeView">
     <HorizontalStackLayout Spacing="20">
         <Label Text="Add Trade" VerticalOptions="Center"/>

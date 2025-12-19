@@ -4,7 +4,7 @@
              x:Class="TopView.Views.SettingsView"
               MinimumWidthRequest="300"
              BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-             xmlns:vm="clr-namespace:TopView.Core.ViewModels;assembly=TopView.Core"
+             xmlns:vm="clr-namespace:TopView.ViewModels;assembly=TopView.ViewModels"
              x:DataType="vm:SettingsPageViewModel">
 
     <Grid RowDefinitions="auto,*">

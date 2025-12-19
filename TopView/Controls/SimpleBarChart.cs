@@ -1,4 +1,4 @@
-using TopView.Core.Models;
+using TopView.Model.Models;
 
 namespace TopView.Controls
 {

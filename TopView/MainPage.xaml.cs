@@ -1,4 +1,4 @@
-﻿using TopView.Core.ViewModels;
+﻿using TopView.ViewModels;
 
 namespace TopView
 {

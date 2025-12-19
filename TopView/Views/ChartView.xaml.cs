@@ -1,5 +1,5 @@
-using TopView.Core.Models;
-using TopView.Core.ViewModels;
+using TopView.Model.Models;
+using TopView.ViewModels;
 
 namespace TopView.Views;
 

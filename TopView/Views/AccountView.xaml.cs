@@ -1,6 +1,5 @@
 using System.Windows.Input;
-using TopView.Core.ViewModel;
-using TopView.Core.ViewModels;
+using TopView.ViewModels;
 
 namespace TopView.Views;
 

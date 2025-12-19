@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:TopView.Views"
              x:Class="TopView.Views.Overview"
-             xmlns:vm="clr-namespace:TopView.Core.ViewModels;assembly=TopView.Core"
+             xmlns:vm="clr-namespace:TopView.ViewModels;assembly=TopView.ViewModels"
              x:DataType="vm:OverviewViewModel">
 
 
