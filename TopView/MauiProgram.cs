@@ -6,9 +6,8 @@ using TopView.Views;
 using TopView.Model.Data;
 using TopView.Services.Interfaces;
 using TopView.Services;
-using TopView.ViewModels.Interfaces;
-using TopView.ViewModels;
-using TopView.Common.Infrastructure;
+using TopView.ViewModel.Interfaces;
+using TopView.ViewModel;
 
 namespace TopView
 {

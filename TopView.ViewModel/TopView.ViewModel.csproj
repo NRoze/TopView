@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net9.0-windows7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Model\TopView.Model.csproj" />
+    <ProjectReference Include="..\TopView.Common\TopView.Common.csproj" />
+    <ProjectReference Include="..\TopView.Services\TopView.Services.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,5 +1,5 @@
-using TopView.ViewModels;
 using TopView.Common.Infrastructure;
+using TopView.ViewModel;
 
 namespace TopView.Views;
 

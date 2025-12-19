@@ -86,7 +86,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Model\TopView.Model.csproj" />
 	  <ProjectReference Include="..\TopView.Common\TopView.Common.csproj" />
-	  <ProjectReference Include="..\TopView.ViewModels\TopView.ViewModels.csproj" />
+	  <ProjectReference Include="..\TopView.Services\TopView.Services.csproj" />
+	  <ProjectReference Include="..\TopView.ViewModel\TopView.ViewModel.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

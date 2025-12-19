@@ -1,11 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using TopView.ViewModels.Interfaces;
-using TopView.ViewModels;
+using TopView.ViewModel.Interfaces;
 using TopView.Model.Models;
 using TopView.Services.Interfaces;
 using TopView.Common.Infrastructure;
 
-namespace TopView.ViewModels
+namespace TopView.ViewModel
 {
     public class AccountViewModel : BaseNotify, IAccountViewModel
     {
@@ -60,7 +59,7 @@ namespace TopView.ViewModels
             AddTradeViewModel.SubmitAction += AddTransaction;
         }
 
-        public Command<decimal> SubmitTransferCommand => new Command<decimal>(tryTranferCash);
+        public RelayCommand<decimal> SubmitTransferCommand => new RelayCommand<decimal>(tryTranferCash);
         private void tryTranferCash(decimal i_Amount)
         {
             Cash += i_Amount;
