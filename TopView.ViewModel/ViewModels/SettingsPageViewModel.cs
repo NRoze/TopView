@@ -14,14 +14,18 @@ namespace TopView.ViewModel
     {
         private readonly IAccountRepository _accountRepo;
         private readonly AccountsViewModel _accoountsVM;
+        private readonly IDialogService _dialogService;
 
         public ICommand ResetDatabaseCommand { get; }
         public ICommand CloseSettingsCommand { get; }
 
-        public SettingsPageViewModel(IAccountRepository accountRepo, AccountsViewModel accountsVM)
+        public SettingsPageViewModel(
+            IAccountRepository accountRepo, AccountsViewModel accountsVM, IDialogService dialogService)
         {
             _accountRepo = accountRepo;
             _accoountsVM = accountsVM;
+            _dialogService = dialogService;
+
             ResetDatabaseCommand = new RelayCommand(async (o) => await ResetDatabase());
             CloseSettingsCommand = new RelayCommand((o) => CloseSettings());
         }
@@ -32,20 +36,15 @@ namespace TopView.ViewModel
         }
         private async Task ResetDatabase()
         {
-            //TBD
-            //bool confirmed = await Application.Current.MainPage.DisplayAlert(
-            //    "Confirm Reset",
-            //    "This will erase all data. Are you sure?",
-            //    "Yes",
-            //    "No");
-
-            //if (!confirmed)
-            //    return;
-
-            //await _accountRepo.Reset();
-            //await _accoountsVM.LoadAccounts();
-            //await Application.Current.MainPage.DisplayAlert("Done", "Database has been reset.", "OK");
-            //CloseSettings();
+            bool result = await _dialogService.ConfirmAsync("Confirm Reset", "This will erase all data. Are you sure?");
+            
+            if (result)
+            {
+                await _accountRepo.Reset();
+                await _accoountsVM.LoadAccounts();
+                await _dialogService.DisplayAsync("Done", "Database has been reset.");
+                CloseSettings();
+            }
         }
     }
 

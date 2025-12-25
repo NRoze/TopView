@@ -11,11 +11,11 @@ using TopView.ViewModel.Interfaces;
 
 namespace TopView.ViewModel
 {
-    public class OverviewViewModel(IDataRepository dataRepo, IAccountRepository repo, AccountsViewModel vm) : BaseNotify, IAccountViewModel
+    public class OverviewViewModel : BaseNotify, IAccountViewModel
     {
-        private readonly IDataRepository _dataRepo = dataRepo;
-        private readonly AccountsViewModel _accountsViewModel = vm;
-        private readonly IAccountRepository _accountRepo = repo;
+        private readonly IDataRepository _dataRepo;
+        private readonly AccountsViewModel _accountsViewModel;
+        private readonly IAccountRepository _accountRepo;
         public List<BalancePoint>? BalancePoints { get; private set; }
 
         public decimal Balance
@@ -51,6 +51,14 @@ namespace TopView.ViewModel
         public int TotalTrades { get => _totalTrades; set => SetProperty(ref _totalTrades, value); }
 
         private double _averageReturn;
+
+        public OverviewViewModel(IDataRepository dataRepo, IAccountRepository repo, AccountsViewModel vm)
+        {
+            _dataRepo = dataRepo;
+            _accountsViewModel = vm;
+            _accountRepo = repo;
+        }
+
         public double AverageReturn { get => _averageReturn; set => SetProperty(ref _averageReturn, value); }
         public decimal DaylyReturn
         {

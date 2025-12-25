@@ -7,7 +7,8 @@
              xmlns:vm="clr-namespace:TopView.ViewModel;assembly=TopView.ViewModel"
              x:DataType="vm:SettingsPageViewModel">
 
-    <Grid RowDefinitions="auto,*">
+    <Grid RowDefinitions="auto,*" HorizontalOptions="Fill" VerticalOptions="Fill" 
+          CascadeInputTransparent="False">
         <Label
                 x:Name="CloseLabel"
                 Text="✖" 
@@ -24,12 +25,13 @@
                 <TapGestureRecognizer Command="{Binding CloseSettingsCommand}" />
             </Label.GestureRecognizers>
         </Label>
-        <VerticalStackLayout Padding="0" Spacing="20" Grid.Row="1" 
+        <VerticalStackLayout Padding="0" Spacing="20" Grid.Row="1"
                              VerticalOptions="Center" HorizontalOptions="Center">
             <Button Text="Reset Database"
                     TextColor="White"
                     BackgroundColor="Red"
                     Command="{Binding ResetDatabaseCommand}" />
+            <Entry></Entry>
         </VerticalStackLayout>
     </Grid>
 </ContentView>

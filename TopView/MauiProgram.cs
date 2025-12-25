@@ -31,6 +31,7 @@ namespace TopView
             // Dependency injection
             builder.Services.AddSingleton(new AppDbContext(dbPath));
             builder.Services.AddSingleton<IHeartbeatService, HeartbeatService>();
+            builder.Services.AddSingleton<IDialogService, MauiDialogService>();
             builder.Services.AddSingleton<IDataRepository, DataRepository>();
             builder.Services.AddSingleton<ISettingsPageViewModel, SettingsPageViewModel>();
             builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
