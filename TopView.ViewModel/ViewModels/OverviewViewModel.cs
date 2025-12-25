@@ -32,23 +32,17 @@ namespace TopView.ViewModel
             }
         }
 
-        private decimal _totalCash;
-        public decimal Cash { get => _totalCash; set => SetProperty(ref _totalCash, value); }
+        public decimal Cash { get => field; set => SetProperty(ref field, value); }
 
-        private decimal _totalAssets;
-        public decimal Assets { get => _totalAssets; set => SetProperty(ref _totalAssets, value); }
+        public decimal Assets { get => field; set => SetProperty(ref field, value); }
 
-        private decimal _realized;
-        public decimal Realized { get => _realized; set => SetProperty(ref _realized, value); }
+        public decimal Realized { get => field; set => SetProperty(ref field, value); }
 
-        private decimal _unrealized;
-        public decimal Unrealized { get => _unrealized; set => SetProperty(ref _unrealized, value); }
+        public decimal Unrealized { get => field; set => SetProperty(ref field, value); }
 
-        private double _successRate;
-        public double SuccessRate { get => _successRate; set => SetProperty(ref _successRate, value); }
+        public double SuccessRate { get => field; set => SetProperty(ref field, value); }
 
-        private int _totalTrades;
-        public int TotalTrades { get => _totalTrades; set => SetProperty(ref _totalTrades, value); }
+        public int TotalTrades { get => field; set => SetProperty(ref field, value); }
 
         private double _averageReturn;
 
