@@ -31,7 +31,6 @@
                     TextColor="White"
                     BackgroundColor="Red"
                     Command="{Binding ResetDatabaseCommand}" />
-            <Entry></Entry>
         </VerticalStackLayout>
     </Grid>
 </ContentView>
