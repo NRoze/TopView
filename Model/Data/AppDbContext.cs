@@ -35,9 +35,9 @@ public class AppDbContext
 
     public async Task Reset() 
     { 
-        await _db.DeleteAllAsync<Account>();
-        await _db.DeleteAllAsync<Trade>();
-        await _db.DeleteAllAsync<BalancePoint>();
+        await ExecuteAction(() => _db.DeleteAllAsync<Account>());
+        await ExecuteAction(() => _db.DeleteAllAsync<Trade>());
+        await ExecuteAction(() => _db.DeleteAllAsync<BalancePoint>());
     }
     public async Task<List<Account>> GetAccountsAsync() => await ExecuteAction(() => _db.Table<Account>().ToListAsync());
     public async Task<List<Trade>> GetTradesAsync() => await ExecuteAction(() =>  _db.Table<Trade>().ToListAsync());
