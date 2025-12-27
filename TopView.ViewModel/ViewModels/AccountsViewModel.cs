@@ -33,9 +33,9 @@ namespace TopView.ViewModel
             }
         }
 
-        public ICommand AddAccountCommand => new RelayCommand(async _ => await createAccount("New Account"));
+        public ICommand AddAccountCommand => new RelayCommand(async _ => await CreateAccount("New Account"));
         public ICommand RemoveAccountCommand => new RelayCommand<AccountViewModel>(
-                                    async (vm) => await removeAccount(vm));
+                                    async (vm) => await RemoveAccount(vm));
 
         private bool settingsDisplayed = false;
         public bool SettingsDisplayed 
@@ -56,11 +56,23 @@ namespace TopView.ViewModel
             _vmFactory = vmFactory;
             _accountRepo = repo;
             _accountVmFactory = accountVmFactory;
-
-            LoadAccounts();
+            _ = LoadAccountsAsync();
         }
 
-        private async Task createAccount(string name, bool isOverview = false)
+        private async Task LoadAccountsAsync()
+        {
+            try
+            {
+                ClearData();
+                await PopulateAccounts();
+                SelectedAccount = Accounts.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Failed to load accounts: {ex.Message}");
+            }
+        }
+        private async Task CreateAccount(string name, bool isOverview = false)
         {
             Account newAccount = new Account { Name = name, IsOverview = isOverview };
             IAccountViewModel vm;
@@ -80,7 +92,7 @@ namespace TopView.ViewModel
             Accounts.Add(vm);
             SelectedAccount = vm;
         }
-        private async Task removeAccount(AccountViewModel accountVM)
+        private async Task RemoveAccount(AccountViewModel accountVM)
         {
             if (accountVM != null && !accountVM.Account.IsOverview)
             {
@@ -92,27 +104,19 @@ namespace TopView.ViewModel
             }
         }
 
-        public async Task LoadAccounts()
-        {
-            clearData();
-            await populateAccounts();
-            SelectedAccount = Accounts.FirstOrDefault();
-        }
-
-        private async Task populateAccounts()
+        private async Task PopulateAccounts()
         {
             var accounts = await _accountRepo.GetAccountsAsync();
             var trades = await _accountRepo.GetTradesAsync();
 
             if (accounts.Count() == 0)
             {
-                await createAccount("Overview", true);
+                await CreateAccount("Overview", true);
             }
 
             foreach (var account in accounts)
             {
                 IAccountViewModel vm;
-
 
                 if (account.IsOverview)
                 {
@@ -130,7 +134,7 @@ namespace TopView.ViewModel
             }
         }
 
-        private void clearData()
+        private void ClearData()
         {
             Accounts.Clear();
             SelectedAccount = null;
