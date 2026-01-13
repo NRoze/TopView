@@ -8,37 +8,37 @@ using Xunit;
 
 namespace TopView.Tests.ViewModels
 {
- public class AccountsViewModelTests
- {
- [Fact]
- public void Constructor_InitializesAccounts()
- {
- // Arrange
- var repo = new Mock<IAccountRepository>();
- var vmFactory = new Mock<IViewModelFactory>();
- Func<TopView.Model.Models.Account, AccountViewModel> accountVmFactory = _ => null!;
+	public class AccountsViewModelTests
+	{
+		[Fact]
+		public void Constructor_InitializesAccounts()
+		{
+			// Arrange
+			var repo = new Mock<IAccountRepository>();
+			var vmFactory = new Mock<IViewModelFactory>();
+			Func<TopView.Model.Models.Account, AccountViewModel> accountVmFactory = _ => null!;
 
- // Act
- var vm = new AccountsViewModel(vmFactory.Object, repo.Object, accountVmFactory);
+			// Act
+			var vm = new AccountsViewModel(vmFactory.Object, repo.Object, accountVmFactory);
 
- // Assert
- Assert.NotNull(vm.Accounts);
- }
+			// Assert
+			Assert.NotNull(vm.Accounts);
+		}
 
- [Fact]
- public async System.Threading.Tasks.Task AddAccountCommand_AddsAccount()
- {
- // Arrange
- var repo = new Mock<IAccountRepository>();
- var vmFactory = new Mock<IViewModelFactory>();
- Func<Account, AccountViewModel> accountVmFactory = _ => new Mock<AccountViewModel>(null, null, null, null).Object;
- var vm = new AccountsViewModel(vmFactory.Object, repo.Object, accountVmFactory);
+		[Fact]
+		public async System.Threading.Tasks.Task AddAccountCommand_AddsAccount()
+		{
+			// Arrange
+			var repo = new Mock<IAccountRepository>();
+			var vmFactory = new Mock<IViewModelFactory>();
+			Func<Account, AccountViewModel> accountVmFactory = _ => new Mock<AccountViewModel>(null, null, null, null).Object;
+			var vm = new AccountsViewModel(vmFactory.Object, repo.Object, accountVmFactory);
 
- // Act
- await System.Threading.Tasks.Task.Run(() => vm.AddAccountCommand.Execute(null));
+			// Act
+			await System.Threading.Tasks.Task.Run(() => vm.AddAccountCommand.Execute(null));
 
- // Assert
- Assert.True(vm.Accounts.Count >=0); // Should be at least0 or more
- }
- }
+			// Assert
+			Assert.True(vm.Accounts.Count >=0); // Should be at least0 or more
+		}
+	}
 }

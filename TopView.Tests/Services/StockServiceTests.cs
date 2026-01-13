@@ -12,64 +12,58 @@ using Xunit;
 
 namespace TopView.Tests.Services
 {
- public class StockServiceTests
- {
- [Fact]
- public async Task GetQuoteAsync_ReturnsQuote_WhenApiReturnsSuccess()
- {
- // Arrange
+	public class StockServiceTests
+	{
+		[Fact]
+		public async Task GetQuoteAsync_ReturnsQuote_WhenApiReturnsSuccess()
+		{
+			// Arrange
  var expected = new Quote (123.45m,1.4m,0.1m, 123m, 112313132);
- var handlerMock = new Mock<HttpMessageHandler>();
- handlerMock.Protected()
+			var handlerMock = new Mock<HttpMessageHandler>();
+			handlerMock.Protected()
 			.Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
- "SendAsync",
- ItExpr.IsAny<HttpRequestMessage>(),
- ItExpr.IsAny<CancellationToken>())
- .ReturnsAsync(new HttpResponseMessage
- {
- StatusCode = HttpStatusCode.OK,
- Content = JsonContent.Create(expected)
- });
- var httpClient = new HttpClient(handlerMock.Object);
- var service = new StockService("dummy-token", httpClient);
+			.ReturnsAsync(new HttpResponseMessage
+			{
+				StatusCode = HttpStatusCode.OK,
+				Content = JsonContent.Create(expected)
+			});
+			var httpClient = new HttpClient(handlerMock.Object);
+			var service = new StockService("dummy-token", httpClient);
 
- // Act
- var result = await service.GetQuoteAsync("AAPL");
+			// Act
+			var result = await service.GetQuoteAsync("AAPL");
 
- // Assert
- Assert.NotNull(result);
- Assert.Equal(expected.c, result.c);
- }
+			// Assert
+			Assert.NotNull(result);
+			Assert.Equal(expected.c, result.c);
+		}
 
- [Fact]
- public async Task GetQuoteAsync_ReturnsNull_OnException()
- {
- // Arrange
- var handlerMock = new Mock<HttpMessageHandler>();
- handlerMock.Protected()
- .Setup<Task<HttpResponseMessage>>(
- "SendAsync",
- ItExpr.IsAny<HttpRequestMessage>(),
- ItExpr.IsAny<CancellationToken>())
- .ThrowsAsync(new HttpRequestException("Network error"));
- var httpClient = new HttpClient(handlerMock.Object);
- var service = new StockService("dummy-token", httpClient);
+		[Fact]
+		public async Task GetQuoteAsync_ReturnsNull_OnException()
+		{
+			// Arrange
+			var handlerMock = new Mock<HttpMessageHandler>();
+			handlerMock.Protected()
+			.Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+			.ThrowsAsync(new HttpRequestException("Network error"));
+			var httpClient = new HttpClient(handlerMock.Object);
+			var service = new StockService("dummy-token", httpClient);
 
- // Act
- var result = await service.GetQuoteAsync("AAPL");
+			// Act
+			var result = await service.GetQuoteAsync("AAPL");
 
- // Assert
- Assert.Null(result);
- }
+			// Assert
+			Assert.Null(result);
+		}
 
- [Fact]
- public async Task GetQuoteAsync_ThrowsArgumentException_OnEmptySymbol()
- {
- // Arrange
- var service = new StockService("dummy-token");
+		[Fact]
+		public async Task GetQuoteAsync_ThrowsArgumentException_OnEmptySymbol()
+		{
+			// Arrange
+			var service = new StockService("dummy-token");
 
- // Act & Assert
- await Assert.ThrowsAsync<ArgumentException>(() => service.GetQuoteAsync(""));
- }
- }
+			// Act & Assert
+			await Assert.ThrowsAsync<ArgumentException>(() => service.GetQuoteAsync(""));
+		}
+	}
 }

@@ -131,7 +131,7 @@ namespace TopView.ViewModel
             BalancePoint newPoint = new BalancePoint { Time = today, Balance = (double)Balance };
 
             await _dataRepo.AddBalancePointAsync(newPoint);
-            BalancePoints.Add(newPoint);
+            BalancePoints?.Add(newPoint);
         }
 
         private async Task updateBalancePoint(BalancePoint point)
@@ -151,7 +151,7 @@ namespace TopView.ViewModel
             else
             {
                 BalancePoints = new List<BalancePoint>();
-            };
+            }
         }
     }
 }
