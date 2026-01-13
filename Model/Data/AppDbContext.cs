@@ -12,14 +12,24 @@ public class AppDbContext
     public AppDbContext(string dbPath)
     {
         _db = new SQLiteAsyncConnection(dbPath);
-        _initializationTask = InitializeTables();
+        // Start initialization task without using ExecuteAction to avoid recursion
+        _initializationTask = InitializeTablesInternal();
     }
+
+    private async Task InitializeTablesInternal()
+    {
+        await _db.CreateTablesAsync<Account, Trade, BalancePoint>();
+    }
+
     public async Task InitializeTables()
     {
-        await ExecuteAction(() => _db.CreateTablesAsync<Account, Trade, BalancePoint>());
+        // Expose a way to await the initialization from outside
+        await _initializationTask;
     }
+
     public async Task<T> ExecuteAction<T>(Func<Task<T>> action)
     {
+        // Wait for initial initialization to complete before executing other actions
         await _initializationTask;
         await _semaphore.WaitAsync();
 
@@ -33,8 +43,8 @@ public class AppDbContext
         }
     }
 
-    public async Task Reset() 
-    { 
+    public async Task Reset()
+    {
         await ExecuteAction(() => _db.DeleteAllAsync<Account>());
         await ExecuteAction(() => _db.DeleteAllAsync<Trade>());
         await ExecuteAction(() => _db.DeleteAllAsync<BalancePoint>());

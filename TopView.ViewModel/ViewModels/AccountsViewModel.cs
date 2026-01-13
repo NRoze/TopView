@@ -59,7 +59,7 @@ namespace TopView.ViewModel
             _ = LoadAccountsAsync();
         }
 
-        private async Task LoadAccountsAsync()
+        internal async Task LoadAccountsAsync()
         {
             try
             {

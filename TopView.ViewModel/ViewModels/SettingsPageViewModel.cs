@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using TopView.Common.Infrastructure;
 using TopView.Services.Interfaces;
 using TopView.ViewModel.Interfaces;
@@ -41,7 +36,7 @@ namespace TopView.ViewModel
             if (result)
             {
                 await _accountRepo.Reset();
-                await _accoountsVM.LoadAccounts();
+                await _accoountsVM.LoadAccountsAsync();
                 await _dialogService.DisplayAsync("Done", "Database has been reset.");
                 CloseSettings();
             }

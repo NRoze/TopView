@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopView.Common", "TopView.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopView.ViewModel", "TopView.ViewModel\TopView.ViewModel.csproj", "{4819E5F6-7B49-4AB5-AE7D-EAB55D09518C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopView.Tests", "TopView.Tests\TopView.Tests.csproj", "{96DF43E6-4FBB-FD02-3AE4-898B5B21920B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{4819E5F6-7B49-4AB5-AE7D-EAB55D09518C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4819E5F6-7B49-4AB5-AE7D-EAB55D09518C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4819E5F6-7B49-4AB5-AE7D-EAB55D09518C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96DF43E6-4FBB-FD02-3AE4-898B5B21920B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96DF43E6-4FBB-FD02-3AE4-898B5B21920B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96DF43E6-4FBB-FD02-3AE4-898B5B21920B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96DF43E6-4FBB-FD02-3AE4-898B5B21920B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

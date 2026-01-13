@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+ <PropertyGroup>
+ <TargetFramework>net9.0-windows7.0</TargetFramework>
+ <IsPackable>false</IsPackable>
+ </PropertyGroup>
+
+ <ItemGroup>
+ <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+ <PackageReference Include="Moq" Version="4.20.70" />
+ <PackageReference Include="xunit" Version="2.5.0" />
+ <PackageReference Include="xunit.runner.visualstudio" Version="2.5.0" />
+ </ItemGroup>
+
+ <ItemGroup>
+ <ProjectReference Include="..\TopView.ViewModel\TopView.ViewModel.csproj" />
+ <ProjectReference Include="..\TopView.Services\TopView.Services.csproj" />
+ <ProjectReference Include="..\TopView.Common\TopView.Common.csproj" />
+ <ProjectReference Include="..\Model\TopView.Model.csproj" />
+ </ItemGroup>
+
+</Project>
