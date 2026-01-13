@@ -21,7 +21,7 @@ namespace TopView.Tests.Services
  var expected = new Quote (123.45m,1.4m,0.1m, 123m, 112313132);
  var handlerMock = new Mock<HttpMessageHandler>();
  handlerMock.Protected()
- .Setup<Task<HttpResponseMessage>>(
+			.Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
  "SendAsync",
  ItExpr.IsAny<HttpRequestMessage>(),
  ItExpr.IsAny<CancellationToken>())
