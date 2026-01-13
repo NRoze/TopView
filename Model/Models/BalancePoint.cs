@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TopView.Model.Models
 {
-    public class BalancePoint
+    public sealed class BalancePoint
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }

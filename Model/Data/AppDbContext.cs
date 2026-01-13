@@ -51,7 +51,7 @@ public class AppDbContext
     }
     public async Task<IEnumerable<Account>> GetAccountsAsync() => await ExecuteAction(() => _db.Table<Account>().ToListAsync());
     public async Task<IEnumerable<Trade>> GetTradesAsync() => await ExecuteAction(() =>  _db.Table<Trade>().ToListAsync());
-    public async Task<IEnumerable<BalancePoint>> GetBalancePointsAsync() => await ExecuteAction(() => _db.Table<BalancePoint>().ToListAsync());
+    public async Task<List<BalancePoint>> GetBalancePointsAsync() => await ExecuteAction(() => _db.Table<BalancePoint>().ToListAsync());
     public async Task<int> SaveAsync<T>(T item) => await ExecuteAction<int>(() => _db.InsertOrReplaceAsync(item));
     public async Task<int> DeleteAsync<T>(T item) => await ExecuteAction<int>(() => _db.DeleteAsync(item));
     public async Task<int> AddBalancePointAsync(BalancePoint account) => await ExecuteAction(() => _db.InsertAsync(account));

@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using TopView.Common.Infrastructure;
 using TopView.Model.Models;
-using TopView.Views;
 using TopView.Model.Data;
 using TopView.Services.Interfaces;
 using TopView.Services;
@@ -29,6 +28,7 @@ namespace TopView
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "topview.db3");
 
             // Dependency injection
+            builder.Services.AddMemoryCache();
             builder.Services.AddSingleton(new AppDbContext(dbPath));
             builder.Services.AddSingleton<IHeartbeatService, HeartbeatService>();
             builder.Services.AddSingleton<IDialogService, MauiDialogService>();

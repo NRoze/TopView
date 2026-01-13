@@ -73,10 +73,10 @@ namespace TopView.ViewModel
         public decimal DaylyReturnP => (Balance - DaylyReturn > 0) ? DaylyReturn / (Balance - DaylyReturn) : 0;
         public decimal MonthlyReturn => Balance - LastMonthBalance;
         public decimal MonthlyReturnP => LastMonthBalance > 0 ? MonthlyReturn / LastMonthBalance : 1;
-        public decimal LastMonthBalance => (decimal)(BalancePoints?.LastOrDefault()?.Balance ?? 0);
+        public decimal LastMonthBalance => (decimal)(BalancePoints?.Where(x => x.Time.Month != DateTime.UtcNow.Month).LastOrDefault()?.Balance ?? 0);
         public Account? Account { get; set; }
 
-        public ObservableCollection<TradeViewModel> Trades { get; }
+        public ObservableCollection<TradeViewModel> Trades { get; } // inheritence requirement
         public string Name { get; set; }
 
         public async Task Update()
@@ -104,7 +104,7 @@ namespace TopView.ViewModel
 
         private async Task udateBalancePoint()
         {
-            await createIfNeeded();
+            await Initialize();
             await updateCurrentBalancePoint();
             OnPropertyChanged(nameof(BalancePoints));
         }
@@ -140,13 +140,14 @@ namespace TopView.ViewModel
             await _dataRepo.SaveBalancePointAsync(point);
         }
 
-        private async Task createIfNeeded()
+        private async Task Initialize()
         {
             var monthlyData = await _dataRepo.GetBalancePointsAsync();
 
             if (monthlyData != null && monthlyData.Count() > 0)
             {
                 BalancePoints = [.. monthlyData!];
+                OnPropertyChanged(nameof(MonthlyReturnP));
             }
             else
             {
