@@ -17,14 +17,15 @@ namespace TopView.Tests.ViewModels
 			// Arrange
 			var dataRepo = new Mock<IDataRepository>();
 			var accountRepo = new Mock<IAccountRepository>();
+			var tradeRepo = new Mock<ITradeRepository>();
 			var accountsViewModel = new Mock<AccountsViewModel>(null, null, null).Object;
 
 			dataRepo.Setup(r => r.GetBalancePointsAsync())
 				.ReturnsAsync(new List<BalancePoint> { new BalancePoint { Time = DateTime.Now, Balance =1000 } });
-			accountRepo.Setup(r => r.GetTradesAsync())
+            tradeRepo.Setup(r => r.GetTradesAsync())
 				.ReturnsAsync(new List<Trade> { new Trade { Realized =10 }, new Trade { Realized = -5 } });
 
-			var vm = new OverviewViewModel(dataRepo.Object, accountRepo.Object, accountsViewModel);
+			var vm = new OverviewViewModel(dataRepo.Object, accountRepo.Object, tradeRepo.Object, accountsViewModel);
 
 			// Act
 			await vm.Update();
@@ -41,10 +42,11 @@ namespace TopView.Tests.ViewModels
 			// Arrange
 			var dataRepo = new Mock<IDataRepository>();
 			var accountRepo = new Mock<IAccountRepository>();
+			var tradeRepo = new Mock<ITradeRepository>();
 			var accountsViewModel = new Mock<AccountsViewModel>(null, null, null).Object;
 			var balancePoints = new List<BalancePoint> { new BalancePoint { Id =1, Time = DateTime.Now, Balance =1000 } };
 			dataRepo.Setup(r => r.GetBalancePointsAsync()).ReturnsAsync(balancePoints);
-			var vm = new OverviewViewModel(dataRepo.Object, accountRepo.Object, accountsViewModel);
+			var vm = new OverviewViewModel(dataRepo.Object, accountRepo.Object, tradeRepo.Object, accountsViewModel);
 
 			// Act
 			var method = typeof(OverviewViewModel).GetMethod("createIfNeeded", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);

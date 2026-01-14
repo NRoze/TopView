@@ -7,6 +7,7 @@ using TopView.Services.Interfaces;
 using TopView.Services;
 using TopView.ViewModel.Interfaces;
 using TopView.ViewModel;
+using TopView.Services.Services.Decorators;
 
 namespace TopView
 {
@@ -30,11 +31,13 @@ namespace TopView
             // Dependency injection
             builder.Services.AddMemoryCache();
             builder.Services.AddSingleton(new AppDbContext(dbPath));
+            builder.Services.AddSingleton<IDataRepository, DataRepositoryCached>();
+            builder.Services.AddSingleton<DataRepository>();
+            builder.Services.AddSingleton<IAccountRepository, AccountRepositoryCached>();
+            builder.Services.AddSingleton<AccountRepository>();
             builder.Services.AddSingleton<IHeartbeatService, HeartbeatService>();
             builder.Services.AddSingleton<IDialogService, MauiDialogService>();
-            builder.Services.AddSingleton<IDataRepository, DataRepository>();
             builder.Services.AddSingleton<ISettingsPageViewModel, SettingsPageViewModel>();
-            builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
             builder.Services.AddSingleton<ITradeRepository, TradeRepository>();
             builder.Services.AddSingleton<IStockService>(sp =>
             {

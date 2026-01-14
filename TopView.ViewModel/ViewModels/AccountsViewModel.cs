@@ -14,6 +14,7 @@ namespace TopView.ViewModel
     public class AccountsViewModel : BaseNotify
     {
         private readonly IAccountRepository _accountRepo;
+        private readonly ITradeRepository _tradesRepo;
         private readonly Func<Account, AccountViewModel> _accountVmFactory;
         private readonly IViewModelFactory _vmFactory;
         public ObservableCollection<IAccountViewModel> Accounts { get; } = new ObservableCollection<IAccountViewModel>();
@@ -51,10 +52,15 @@ namespace TopView.ViewModel
             }
         }
 
-        public AccountsViewModel(IViewModelFactory vmFactory, IAccountRepository repo, Func<Account, AccountViewModel> accountVmFactory)
+        public AccountsViewModel(
+            IViewModelFactory vmFactory, 
+            IAccountRepository repo, 
+            ITradeRepository tradesRepo,
+            Func<Account, AccountViewModel> accountVmFactory)
         {
             _vmFactory = vmFactory;
             _accountRepo = repo;
+            _tradesRepo = tradesRepo;
             _accountVmFactory = accountVmFactory;
             _ = LoadAccountsAsync();
         }
@@ -107,9 +113,9 @@ namespace TopView.ViewModel
         private async Task PopulateAccounts()
         {
             var accounts = await _accountRepo.GetAccountsAsync();
-            var trades = await _accountRepo.GetTradesAsync();
+            var trades = await _tradesRepo.GetTradesAsync();
 
-            if (accounts.Count() == 0)
+            if (accounts?.Count() == 0)
             {
                 await CreateAccount("Overview", true);
             }

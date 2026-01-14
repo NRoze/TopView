@@ -18,6 +18,7 @@ namespace TopView.Services
         }
         public async Task AddAsync(Trade account) => await _db.AddTradeAsync(account);
         public async Task SaveAsync(Trade account) => await _db.SaveTradeAsync(account);
+        public async Task<List<Trade>> GetTradesAsync() => await _db.GetTradesAsync();
 
         public async Task RemoveAsync(Trade account) => await _db.DeleteTradeAsync(account);
     }

@@ -16,6 +16,7 @@ namespace TopView.ViewModel
         private readonly IDataRepository _dataRepo;
         private readonly AccountsViewModel _accountsViewModel;
         private readonly IAccountRepository _accountRepo;
+        private readonly ITradeRepository _tradeRepo;
         public List<BalancePoint>? BalancePoints { get; private set; }
 
         public decimal Balance
@@ -46,11 +47,16 @@ namespace TopView.ViewModel
 
         private double _averageReturn;
 
-        public OverviewViewModel(IDataRepository dataRepo, IAccountRepository repo, AccountsViewModel vm)
+        public OverviewViewModel(
+            IDataRepository dataRepo, 
+            IAccountRepository repo, 
+            ITradeRepository tradeRepo, 
+            AccountsViewModel vm)
         {
             _dataRepo = dataRepo;
             _accountsViewModel = vm;
             _accountRepo = repo;
+            _tradeRepo = tradeRepo;
         }
 
         public double AverageReturn { get => _averageReturn; set => SetProperty(ref _averageReturn, value); }
@@ -89,9 +95,9 @@ namespace TopView.ViewModel
             Realized = accounts.Sum(a => a.Realized);
             Unrealized = accounts.Sum(a => a.Unrealized);
 
-            var allTrades = await _accountRepo.GetTradesAsync();
+            var allTrades = await _tradeRepo.GetTradesAsync();
 
-            if (allTrades.Count() > 0)
+            if (allTrades?.Count() > 0)
             {
                 var successful = allTrades.Count(t => t.Realized > 0);
                 var total = allTrades.Count();

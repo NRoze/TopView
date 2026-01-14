@@ -9,7 +9,7 @@ namespace TopView.Services.Interfaces
 {
     public interface IDataRepository
     {
-        Task<List<BalancePoint>> GetBalancePointsAsync();
+        Task<List<BalancePoint>?> GetBalancePointsAsync();
         Task AddBalancePointAsync(BalancePoint account);
         Task SaveBalancePointAsync(BalancePoint account);
         Task RemoveBalancePointAsync(BalancePoint account);

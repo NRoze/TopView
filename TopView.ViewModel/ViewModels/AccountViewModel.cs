@@ -49,13 +49,16 @@ namespace TopView.ViewModel
                 _accountRepo.SaveAsync(Account);
             }
         }
-        public AccountViewModel( IAccountRepository accountRepo, ITradeRepository repo, IStockService stockService
-            , IHeartbeatService heartbeatService)
+        public AccountViewModel(
+            IAccountRepository accountRepo, 
+            ITradeRepository repo, 
+            IStockService stockService,
+            IHeartbeatService heartbeatService)
         {
             _accountRepo = accountRepo;
             _repo = repo;
             _stockService = stockService;
-            heartbeatService.Ticked += (date) => Update();
+            heartbeatService.Ticked += async (date) => await Update();
             AddTradeViewModel.SubmitAction += AddTransaction;
         }
 

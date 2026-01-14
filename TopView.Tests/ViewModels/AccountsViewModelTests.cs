@@ -15,11 +15,12 @@ namespace TopView.Tests.ViewModels
 		{
 			// Arrange
 			var repo = new Mock<IAccountRepository>();
+			var tradeRepo = new Mock<ITradeRepository>();
 			var vmFactory = new Mock<IViewModelFactory>();
 			Func<TopView.Model.Models.Account, AccountViewModel> accountVmFactory = _ => null!;
 
 			// Act
-			var vm = new AccountsViewModel(vmFactory.Object, repo.Object, accountVmFactory);
+			var vm = new AccountsViewModel(vmFactory.Object, repo.Object, tradeRepo.Object, accountVmFactory);
 
 			// Assert
 			Assert.NotNull(vm.Accounts);
@@ -30,9 +31,10 @@ namespace TopView.Tests.ViewModels
 		{
 			// Arrange
 			var repo = new Mock<IAccountRepository>();
+			var tradeRepo = new Mock<ITradeRepository>();
 			var vmFactory = new Mock<IViewModelFactory>();
 			Func<Account, AccountViewModel> accountVmFactory = _ => new Mock<AccountViewModel>(null, null, null, null).Object;
-			var vm = new AccountsViewModel(vmFactory.Object, repo.Object, accountVmFactory);
+			var vm = new AccountsViewModel(vmFactory.Object, repo.Object, tradeRepo.Object, accountVmFactory);
 
 			// Act
 			await System.Threading.Tasks.Task.Run(() => vm.AddAccountCommand.Execute(null));
