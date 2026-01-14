@@ -8,6 +8,7 @@ using TopView.Services;
 using TopView.ViewModel.Interfaces;
 using TopView.ViewModel;
 using TopView.Services.Services.Decorators;
+using TopView.Extensions;
 
 namespace TopView
 {
@@ -26,40 +27,11 @@ namespace TopView
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "topview.db3");
-
-            // Dependency injection
             builder.Services.AddMemoryCache();
-            builder.Services.AddSingleton(new AppDbContext(dbPath));
-            builder.Services.AddSingleton<IDataRepository, DataRepositoryCached>();
-            builder.Services.AddSingleton<DataRepository>();
-            builder.Services.AddSingleton<IAccountRepository, AccountRepositoryCached>();
-            builder.Services.AddSingleton<AccountRepository>();
-            builder.Services.AddSingleton<IHeartbeatService, HeartbeatService>();
-            builder.Services.AddSingleton<IDialogService, MauiDialogService>();
-            builder.Services.AddSingleton<ISettingsPageViewModel, SettingsPageViewModel>();
-            builder.Services.AddSingleton<ITradeRepository, TradeRepository>();
-            builder.Services.AddSingleton<IStockService>(sp =>
-            {
-                string apiKey = "c6cf25iad3i95gi9b870";
-                return new StockService(apiKey);
-            });
-
-            builder.Services.AddSingleton<IViewModelFactory, ViewModelFactory>();
-            builder.Services.AddSingleton<AccountsViewModel>();
-            builder.Services.AddTransient<OverviewViewModel>();
-
-            builder.Services.AddTransient<Func<Account, AccountViewModel>>(sp =>
-            {
-                return (Account account) =>
-                {
-                    var accountRepo = sp.GetRequiredService<IAccountRepository>();
-                    var repo = sp.GetRequiredService<ITradeRepository>();
-                    var stockService = sp.GetRequiredService<IStockService>();
-                    var heartcheatService = sp.GetRequiredService<IHeartbeatService>();
-                    return new AccountViewModel(accountRepo, repo, stockService, heartcheatService) { Account = account };
-                };
-            });
+            builder.Services.AddRepositories();
+            builder.Services.AddServices();
+            builder.Services.AddDbContext();
+            builder.Services.AddViewModels();
 
 #if DEBUG
             builder.Logging.AddDebug();
