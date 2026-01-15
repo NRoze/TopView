@@ -8,7 +8,8 @@
     VerticalOptions="Fill">
     <Grid>
         <VerticalStackLayout x:Name="m_AccountView" Padding="10" Spacing="0">
-            <views:EditableLabel Text="{Binding Name, Mode=TwoWay}" HorizontalOptions="Start" FontSize="18"/>
+            <views:EditableLabel Text="{Binding Name, Mode=TwoWay}" 
+                                 HorizontalOptions="Start" FontSize="18"/>
             <Grid ColumnDefinitions="1*,1*,Auto">
                 <Grid ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto, Auto" ColumnSpacing="20">
                     <Label Text="Balance"/>

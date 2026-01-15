@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using TopView.ViewModel.Interfaces;
+using TopView.Common.Infrastructure;
 using TopView.Model.Models;
 using TopView.Services.Interfaces;
-using TopView.Common.Infrastructure;
-using TopView.Common.Interfaces;
+using TopView.ViewModel.Interfaces;
+using TopView.Common.Extensions;
 
 namespace TopView.ViewModel
 {
@@ -47,7 +47,7 @@ namespace TopView.ViewModel
         {
             if (Account != null)
             {
-                _accountRepo.SaveAsync(Account);
+                _accountRepo.SaveAsync(Account).FireAndForgetSafeAsync();
             }
         }
         public AccountViewModel(
