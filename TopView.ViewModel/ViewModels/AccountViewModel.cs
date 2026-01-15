@@ -3,14 +3,15 @@ using TopView.ViewModel.Interfaces;
 using TopView.Model.Models;
 using TopView.Services.Interfaces;
 using TopView.Common.Infrastructure;
+using TopView.Common.Interfaces;
 
 namespace TopView.ViewModel
 {
     public class AccountViewModel : BaseNotify, IAccountViewModel
     {
         private readonly IStockService _stockService;
-        private readonly ITradeRepository _repo;
-        private readonly IAccountRepository _accountRepo;
+        private readonly RepositoryCached<Trade> _repo;
+        private readonly RepositoryCached<Account> _accountRepo;
         public ObservableCollection<TradeViewModel> Trades { get; } = new ObservableCollection<TradeViewModel>();
         public AddTradeViewModel AddTradeViewModel { get; } = new AddTradeViewModel();
 
@@ -50,8 +51,8 @@ namespace TopView.ViewModel
             }
         }
         public AccountViewModel(
-            IAccountRepository accountRepo, 
-            ITradeRepository repo, 
+            RepositoryCached<Account> accountRepo,
+            RepositoryCached<Trade> repo, 
             IStockService stockService,
             IHeartbeatService heartbeatService)
         {

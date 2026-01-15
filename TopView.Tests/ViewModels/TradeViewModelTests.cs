@@ -1,5 +1,6 @@
-using System.Threading.Tasks;
 using Moq;
+using System.Threading.Tasks;
+using TopView.Common.Infrastructure;
 using TopView.Model.Models;
 using TopView.Services.Interfaces;
 using TopView.ViewModel;
@@ -24,7 +25,7 @@ namespace TopView.Tests.ViewModels
 				Realized =10m
 			};
 
-			var repo = new Mock<ITradeRepository>();
+			var repo = new Mock<RepositoryCached<Trade>>();
 			var vm = new TradeViewModel(repo.Object, trade);
 
 			// Act
@@ -50,7 +51,7 @@ namespace TopView.Tests.ViewModels
 				Quantity =3m,
 				Cost =4m
 			};
-			var repo = new Mock<ITradeRepository>();
+			var repo = new Mock<RepositoryCached<Trade>>();
 			var vm = new TradeViewModel(repo.Object, trade);
 
 			// Act
@@ -75,7 +76,7 @@ namespace TopView.Tests.ViewModels
 				Cost =5m
 			};
 
-			var repo = new Mock<ITradeRepository>();
+			var repo = new Mock<RepositoryCached<Trade>>();
 			repo.Setup(r => r.SaveAsync(It.IsAny<Trade>())).Returns(Task.CompletedTask);
 
 			var vm = new TradeViewModel(repo.Object, trade);

@@ -14,8 +14,8 @@ namespace TopView.Tests.ViewModels
 		public void Constructor_InitializesAccounts()
 		{
 			// Arrange
-			var repo = new Mock<IAccountRepository>();
-			var tradeRepo = new Mock<ITradeRepository>();
+			var repo = new Mock<RepositoryCached<Account>>();
+			var tradeRepo = new Mock<RepositoryCached<Trade>>();
 			var vmFactory = new Mock<IViewModelFactory>();
 			Func<TopView.Model.Models.Account, AccountViewModel> accountVmFactory = _ => null!;
 
@@ -30,8 +30,8 @@ namespace TopView.Tests.ViewModels
 		public async System.Threading.Tasks.Task AddAccountCommand_AddsAccount()
 		{
 			// Arrange
-			var repo = new Mock<IAccountRepository>();
-			var tradeRepo = new Mock<ITradeRepository>();
+			var repo = new Mock<RepositoryCached<Account>>();
+			var tradeRepo = new Mock<RepositoryCached<Trade>>();
 			var vmFactory = new Mock<IViewModelFactory>();
 			Func<Account, AccountViewModel> accountVmFactory = _ => new Mock<AccountViewModel>(null, null, null, null).Object;
 			var vm = new AccountsViewModel(vmFactory.Object, repo.Object, tradeRepo.Object, accountVmFactory);

@@ -6,10 +6,10 @@ namespace TopView.ViewModel;
 
 public partial class TradeViewModel : BaseNotify
 {
-    private readonly ITradeRepository _repo;
+    private readonly RepositoryCached<Trade> _repo;
     public Trade Trade { get; }
 
-    public TradeViewModel(ITradeRepository repo, Trade trade)
+    public TradeViewModel(RepositoryCached<Trade> repo, Trade trade)
     {
         _repo = repo;
         Trade = trade;

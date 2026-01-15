@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using TopView.Common.Infrastructure;
+using TopView.Model.Models;
 using TopView.Services.Interfaces;
 using TopView.ViewModel.Interfaces;
 
@@ -7,7 +8,7 @@ namespace TopView.ViewModel
 {
     public class SettingsPageViewModel : BaseNotify, ISettingsPageViewModel
     {
-        private readonly IAccountRepository _accountRepo;
+        private readonly RepositoryCached<Account> _accountRepo;
         private readonly AccountsViewModel _accoountsVM;
         private readonly IDialogService _dialogService;
 
@@ -15,7 +16,7 @@ namespace TopView.ViewModel
         public ICommand CloseSettingsCommand { get; }
 
         public SettingsPageViewModel(
-            IAccountRepository accountRepo, AccountsViewModel accountsVM, IDialogService dialogService)
+            RepositoryCached<Account> accountRepo, AccountsViewModel accountsVM, IDialogService dialogService)
         {
             _accountRepo = accountRepo;
             _accoountsVM = accountsVM;

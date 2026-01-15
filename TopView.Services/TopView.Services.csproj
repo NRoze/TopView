@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Model\TopView.Model.csproj" />
+    <ProjectReference Include="..\TopView.Common\TopView.Common.csproj" />
   </ItemGroup>
 
 </Project>

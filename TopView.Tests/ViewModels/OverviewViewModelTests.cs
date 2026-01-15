@@ -1,7 +1,8 @@
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Moq;
+using TopView.Common.Infrastructure;
 using TopView.Model.Models;
 using TopView.Services.Interfaces;
 using TopView.ViewModel;
@@ -15,17 +16,16 @@ namespace TopView.Tests.ViewModels
 		public async Task Update_SetsProperties()
 		{
 			// Arrange
-			var dataRepo = new Mock<IDataRepository>();
-			var accountRepo = new Mock<IAccountRepository>();
-			var tradeRepo = new Mock<ITradeRepository>();
+			var balancePointRepo = new Mock<RepositoryCached<BalancePoint>>();
+			var tradeRepo = new Mock<RepositoryCached<Trade>>();
 			var accountsViewModel = new Mock<AccountsViewModel>(null, null, null).Object;
 
-			dataRepo.Setup(r => r.GetBalancePointsAsync())
+			balancePointRepo.Setup(r => r.GetAllAsync())
 				.ReturnsAsync(new List<BalancePoint> { new BalancePoint { Time = DateTime.Now, Balance =1000 } });
-            tradeRepo.Setup(r => r.GetTradesAsync())
+            tradeRepo.Setup(r => r.GetAllAsync())
 				.ReturnsAsync(new List<Trade> { new Trade { Realized =10 }, new Trade { Realized = -5 } });
 
-			var vm = new OverviewViewModel(dataRepo.Object, accountRepo.Object, tradeRepo.Object, accountsViewModel);
+			var vm = new OverviewViewModel(balancePointRepo.Object, tradeRepo.Object, accountsViewModel);
 
 			// Act
 			await vm.Update();
@@ -40,13 +40,12 @@ namespace TopView.Tests.ViewModels
 		public async Task createIfNeeded_InitializesBalancePoints()
 		{
 			// Arrange
-			var dataRepo = new Mock<IDataRepository>();
-			var accountRepo = new Mock<IAccountRepository>();
-			var tradeRepo = new Mock<ITradeRepository>();
+			var balancePointRepo = new Mock<RepositoryCached<BalancePoint>>();
+			var tradeRepo = new Mock<RepositoryCached<Trade>>();
 			var accountsViewModel = new Mock<AccountsViewModel>(null, null, null).Object;
 			var balancePoints = new List<BalancePoint> { new BalancePoint { Id =1, Time = DateTime.Now, Balance =1000 } };
-			dataRepo.Setup(r => r.GetBalancePointsAsync()).ReturnsAsync(balancePoints);
-			var vm = new OverviewViewModel(dataRepo.Object, accountRepo.Object, tradeRepo.Object, accountsViewModel);
+			balancePointRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(balancePoints);
+			var vm = new OverviewViewModel(balancePointRepo.Object, tradeRepo.Object, accountsViewModel);
 
 			// Act
 			var method = typeof(OverviewViewModel).GetMethod("createIfNeeded", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);

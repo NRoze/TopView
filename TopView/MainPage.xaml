@@ -10,5 +10,4 @@
                                 HorizontalOptions="Fill" />
         </HorizontalStackLayout>
     </ScrollView>
-
 </ContentPage>

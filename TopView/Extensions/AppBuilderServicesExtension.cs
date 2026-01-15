@@ -1,9 +1,9 @@
 ﻿using TopView.Common.Infrastructure;
+using TopView.Common.Interfaces;
 using TopView.Model.Data;
 using TopView.Model.Models;
 using TopView.Services;
 using TopView.Services.Interfaces;
-using TopView.Services.Services.Decorators;
 using TopView.ViewModel;
 using TopView.ViewModel.Interfaces;
 
@@ -13,12 +13,12 @@ namespace TopView.Extensions
     {
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddSingleton<IDataRepository, DataRepositoryCached>();
-            services.AddSingleton<DataRepository>();
-            services.AddSingleton<IAccountRepository, AccountRepositoryCached>();
-            services.AddSingleton<AccountRepository>();
-            services.AddSingleton<ITradeRepository, TradeRepositoryCached>();
-            services.AddSingleton<TradeRepository>();
+            services.AddSingleton<RepositoryCached<Account>>();
+            services.AddSingleton<IRepository<Account>, AccountRepository>();
+            services.AddSingleton<RepositoryCached<Trade>>();
+            services.AddSingleton<IRepository<Trade>, TradeRepository>();
+            services.AddSingleton<RepositoryCached<BalancePoint>>();
+            services.AddSingleton<IRepository<BalancePoint>, DataRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
@@ -47,8 +47,8 @@ namespace TopView.Extensions
             {
                 return (Account account) =>
                 {
-                    var accountRepo = sp.GetRequiredService<IAccountRepository>();
-                    var repo = sp.GetRequiredService<ITradeRepository>();
+                    var accountRepo = sp.GetRequiredService<RepositoryCached<Account>>();
+                    var repo = sp.GetRequiredService<RepositoryCached<Trade>>();
                     var stockService = sp.GetRequiredService<IStockService>();
                     var heartcheatService = sp.GetRequiredService<IHeartbeatService>();
                     return new AccountViewModel(accountRepo, repo, stockService, heartcheatService) { Account = account };

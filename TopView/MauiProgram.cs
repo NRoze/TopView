@@ -1,13 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using TopView.Common.Infrastructure;
-using TopView.Model.Models;
-using TopView.Model.Data;
 using TopView.Services.Interfaces;
-using TopView.Services;
-using TopView.ViewModel.Interfaces;
-using TopView.ViewModel;
-using TopView.Services.Services.Decorators;
 using TopView.Extensions;
 
 namespace TopView

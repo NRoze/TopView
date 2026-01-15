@@ -13,10 +13,9 @@ namespace TopView.ViewModel
 {
     public class OverviewViewModel : BaseNotify, IAccountViewModel
     {
-        private readonly IDataRepository _dataRepo;
+        private readonly RepositoryCached<BalancePoint> _balancePointsRepo;
         private readonly AccountsViewModel _accountsViewModel;
-        private readonly IAccountRepository _accountRepo;
-        private readonly ITradeRepository _tradeRepo;
+        private readonly RepositoryCached<Trade> _tradeRepo;
         public List<BalancePoint>? BalancePoints { get; private set; }
 
         public decimal Balance
@@ -48,14 +47,12 @@ namespace TopView.ViewModel
         private double _averageReturn;
 
         public OverviewViewModel(
-            IDataRepository dataRepo, 
-            IAccountRepository repo, 
-            ITradeRepository tradeRepo, 
+            RepositoryCached<BalancePoint> balancePointRepo,
+            RepositoryCached<Trade> tradeRepo, 
             AccountsViewModel vm)
         {
-            _dataRepo = dataRepo;
+            _balancePointsRepo = balancePointRepo;
             _accountsViewModel = vm;
-            _accountRepo = repo;
             _tradeRepo = tradeRepo;
         }
 
@@ -82,8 +79,8 @@ namespace TopView.ViewModel
         public decimal LastMonthBalance => (decimal)(BalancePoints?.Where(x => x.Time.Month != DateTime.UtcNow.Month).LastOrDefault()?.Balance ?? 0);
         public Account? Account { get; set; }
 
-        public ObservableCollection<TradeViewModel> Trades { get; } // inheritence requirement
-        public string Name { get; set; }
+        public ObservableCollection<TradeViewModel> Trades { get; } = default!; // inheritence requirement
+        public string Name { get; set; } = default!; // inheritence requirement
 
         public async Task Update()
         {
@@ -95,7 +92,7 @@ namespace TopView.ViewModel
             Realized = accounts.Sum(a => a.Realized);
             Unrealized = accounts.Sum(a => a.Unrealized);
 
-            var allTrades = await _tradeRepo.GetTradesAsync();
+            var allTrades = await _tradeRepo.GetAllAsync();
 
             if (allTrades?.Count() > 0)
             {
@@ -136,19 +133,19 @@ namespace TopView.ViewModel
         {
             BalancePoint newPoint = new BalancePoint { Time = today, Balance = (double)Balance };
 
-            await _dataRepo.AddBalancePointAsync(newPoint);
+            await _balancePointsRepo.AddAsync(newPoint);
             BalancePoints?.Add(newPoint);
         }
 
         private async Task updateBalancePoint(BalancePoint point)
         {
             point.Balance = (double)Balance;
-            await _dataRepo.SaveBalancePointAsync(point);
+            await _balancePointsRepo.SaveAsync(point);
         }
 
         private async Task Initialize()
         {
-            var monthlyData = await _dataRepo.GetBalancePointsAsync();
+            var monthlyData = await _balancePointsRepo.GetAllAsync();
 
             if (monthlyData != null && monthlyData.Count() > 0)
             {
