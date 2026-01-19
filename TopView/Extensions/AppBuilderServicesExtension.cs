@@ -13,11 +13,9 @@ namespace TopView.Extensions
     {
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddSingleton<RepositoryCached<Account>>();
+            services.AddSingleton(typeof(RepositoryCached<>));
             services.AddSingleton<IRepository<Account>, AccountRepository>();
-            services.AddSingleton<RepositoryCached<Trade>>();
             services.AddSingleton<IRepository<Trade>, TradeRepository>();
-            services.AddSingleton<RepositoryCached<BalancePoint>>();
             services.AddSingleton<IRepository<BalancePoint>, DataRepository>();
         }
 
